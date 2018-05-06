@@ -66,19 +66,18 @@
                         // Create the prepared statement and use it to
                         // UPDATE the Class  attributes in the Class  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE Class  SET title = ?, year = ?, " +
+                            "UPDATE Class SET title = ?, year = ?, " +
                             "quarter = ?, course_id = ? WHERE class_id = ?");
 
 
-                        pstmt.setString(1, (request.getParameter("title")));
+                        pstmt.setString(1, request.getParameter("title"));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("year")));
                         pstmt.setString(3, request.getParameter("quarter"));
 
 
-                        pstmt.setString(3, request.getParameter("course_id"));
+                        pstmt.setString(4, request.getParameter("course_id"));
 
-                        pstmt.setInt(
-                            6, Integer.parseInt(request.getParameter("class_id")));
+                        pstmt.setString(5, request.getParameter("class_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -100,8 +99,7 @@
                         PreparedStatement pstmt = conn.prepareStatement(
                             "DELETE FROM class  WHERE class_id = ?");
 
-                        pstmt.setInt(
-                            1, Integer.parseInt(request.getParameter("class_id")));
+                        pstmt.setString(1, request.getParameter("class_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -167,7 +165,7 @@
                             <%-- Get the title --%>
                             <td>
                                 <input value="<%= rs.getString("title") %>" 
-                                    name="title" size="10">
+                                    name="title" size="50">
                             </td>
     
                             <%-- Get the year --%>
