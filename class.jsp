@@ -37,12 +37,10 @@
                         PreparedStatement pstmt = conn.prepareStatement(
                             "INSERT INTO Class VALUES (?, ?, ?, ?, ?)");
 
-                        pstmt.setString(
-                            1, request.getParameter("class_id"));
+                        pstmt.setString(1, request.getParameter("class_id"));
                         pstmt.setString(2, (request.getParameter("title")));
                         pstmt.setInt(3, Integer.parseInt(request.getParameter("year")));
                         pstmt.setString(4, request.getParameter("quarter"));
-       						
                         pstmt.setString(5, request.getParameter("course_id"));
 
 
@@ -73,12 +71,8 @@
                         pstmt.setString(1, (request.getParameter("title")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("year")));
                         pstmt.setString(3, request.getParameter("quarter"));
-
-
-                        pstmt.setString(3, request.getParameter("course_id"));
-
-                        pstmt.setInt(
-                            6, Integer.parseInt(request.getParameter("class_id")));
+                        pstmt.setString(4, request.getParameter("course_id"));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("class_id")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -233,4 +227,3 @@
 </body>
 
 </html>
-
