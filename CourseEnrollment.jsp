@@ -138,7 +138,7 @@
                     <tr>
                         <form action="course_enrollment.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="courseID" size="10"></th>
+                            <th><input value="" name="units" size="10"></th>
                             <th><input value="" name="number" size="10"></th>
                             <th><input value="" name="require_consent" size="15"></th>
 			    <th><input value="" name="grade_option" size="15"></th>
@@ -162,44 +162,26 @@
 
                             <%-- Get the courseID, which is a number --%>
                             <td>
-                                <input value="<%= rs.getInt("courseID") %>" 
-                                    name="courseID" size="10">
-                            </td>
-
-                            <%-- Get the courseID, which is a number --%>
-                            <td>
-                                <input value="<%= rs.getInt("number") %>" 
-                                    name="number" size="10">
+                                <input value="<%= rs.getInt("units") %>" 
+                                    name="units" size="10">
                             </td>
     
                             <%-- Get the ID --%>
                             <td>
-                                <input value="<%= rs.getString("require_consent") %>" 
-                                    name="require_consent" size="10">
+                                <input value="<%= rs.getString("section_id") %>" 
+                                    name="section" size="10">
                             </td>
     
                             <%-- Get the FIRSTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("lab_required") %>"
-                                    name="lab_required" size="15">
+                                <input value="<%= rs.getString("course_id") %>"
+                                    name="course" size="15">
                             </td>
     
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("grade_option") %>" 
-                                    name="grade_option" size="15">
-                            </td>
-    
-			    <%-- Get the LASTNAME --%>
-                            <td>
-                                <input value="<%= rs.getArray("pre_requisite") %>" 
-                                    name="pre_requiste" size="15">
-                            </td>
-
-                            <%-- Get the COLLEGE --%>
-                            <td>
-                                <input value="<%= rs.getArray("unit") %>" 
-                                    name="unit" size="15">
+                                <input value="<%= rs.getString("student_id") %>" 
+                                    name="student" size="15">
                             </td>
     
                             <%-- Button --%>

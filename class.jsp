@@ -195,7 +195,7 @@
                         <form action="class.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getInt("class_id") %>" name="class_id">
+                                value="<%= rs.getString("class_id") %>" name="class_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
