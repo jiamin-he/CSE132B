@@ -165,13 +165,14 @@
                             <%-- Get the course_number --%>
                             <td>
                                 <input value="<%= rs.getString("course_number") %>" 
-                                    name="course_number" size="50">
+                                    name="course_number" size="10">
                             </td>
     
                             <%-- Get the require_consent --%>
                             <td>
                                 <input value="<%= rs.getString("require_consent") %>"
                                     name="require_consent" size="15">
+
                             </td>
     
                             <%-- Get the LASTNAME --%>
