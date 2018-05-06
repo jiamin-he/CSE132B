@@ -63,13 +63,14 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE probation_info SET student_id = ?, faculty_id = ? " +
-                            "WHERE student_id = ? and faculty_id = ? ");
+                            "UPDATE probation_info SET ptime = ? , preason = ? " +
+                            "WHERE student_id = ? and ptime = ? and preason = ?");
 
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("faculty"));
+                        pstmt.setString(1, request.getParameter("time"));
+                        pstmt.setString(2, request.getParameter("reason"));
                         pstmt.setString(3, request.getParameter("student"));
-                        pstmt.setString(4, request.getParameter("faculty"));
+                        pstmt.setString(4, request.getParameter("oldTime"));
+                        pstmt.setString(5, request.getParameter("oldReason"));
                         
                         
                         int rowCount = pstmt.executeUpdate();
@@ -163,6 +164,12 @@
                                     name="reason" size="30">
                             </td>
 
+                            <input type="hidden" 
+                                value="<%= rs.getString("preason") %>" name="oldReason">
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("ptime") %>" name="oldTime">
+
                            
                             <%-- Button --%>
                             <td>
@@ -172,7 +179,7 @@
                         <form action="probation_info.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden"
-                                value="<%= rs.getString("student_id") %>" name="student">
+                                value="<%= rs.getString("student_id") %>" name="student" readonly="true">
                             <input type="hidden" 
                                 value="<%= rs.getString("ptime") %>" name="time">
                             <input type="hidden" 

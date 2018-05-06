@@ -64,15 +64,13 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE  thesis_committee SET student_id = ?, faculty_id = ? " +
-                            "WHERE student_id = ? and faculty_id = ? ");
+                            "UPDATE  thesis_committee SET faculty_id = ? " +
+                            "WHERE student_id = ? and faculty_id = ?");
 
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("faculty"));
-                        pstmt.setString(3, request.getParameter("student"));
-                        pstmt.setString(4, request.getParameter("faculty"));
-                        
-                        
+                        pstmt.setString(1, request.getParameter("faculty"));
+                        pstmt.setString(2, request.getParameter("student"));
+                        pstmt.setString(3, request.getParameter("oldFaculty"));
+                
                         int rowCount = pstmt.executeUpdate();
                         // Commit transaction
                         conn.commit();
@@ -125,7 +123,7 @@
                     <tr>
                         <form action="thesis_committee.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="student" size="10"></th>
+                            <th><input value="" name="student" size="10" ></th>
                             <th><input value="" name="faculty" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -146,7 +144,7 @@
                             <%-- Get the LASTNAME --%>
                             <td>
                                 <input value="<%= rs.getString("student_id") %>" 
-                                    name="student" size="15">
+                                    name="student" size="15" readonly="true">
                             </td>
 
                             <%-- Get the FIRSTNAME --%>
@@ -155,6 +153,10 @@
                                     name="faculty" size="15">
                             </td>
 
+                            
+                            <input type="hidden" 
+                                value="<%= rs.getString("faculty_id") %>" name="oldFaculty">
+                            
                            
                             <%-- Button --%>
                             <td>
@@ -167,6 +169,7 @@
                                 value="<%= rs.getString("student_id") %>" name="student">
                             <input type="hidden" 
                                 value="<%= rs.getString("faculty_id") %>" name="faculty">
+                            
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

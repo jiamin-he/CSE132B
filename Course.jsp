@@ -159,7 +159,7 @@
                             <%-- Get the course_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10">
+                                    name="course_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the course_number --%>

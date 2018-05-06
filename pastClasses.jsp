@@ -67,14 +67,16 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE  classes_taken_in_the_past SET course_id = ?, grade = ? " +
+                            "UPDATE  classes_taken_in_the_past SET course_id = ?, grade = ?, section_id = ? , quarter = ? " +
                             "WHERE student_id = ? and section_id = ? and quarter = ? ");
 
                         pstmt.setString(1, request.getParameter("course"));
                         pstmt.setString(2, request.getParameter("grade"));
-                        pstmt.setString(3, request.getParameter("student"));
-                        pstmt.setString(4, request.getParameter("section"));
-                        pstmt.setString(5, request.getParameter("quarter"));
+                        pstmt.setString(3, request.getParameter("section"));
+                        pstmt.setString(4, request.getParameter("quarter"));
+                        pstmt.setString(5, request.getParameter("student"));
+                        pstmt.setString(6, request.getParameter("oldSection"));
+                        pstmt.setString(7, request.getParameter("oldQuarter"));
                         
                         int rowCount = pstmt.executeUpdate();
                         // Commit transaction
@@ -155,7 +157,7 @@
                             <%-- Get the LASTNAME --%>
                             <td>
                                 <input value="<%= rs.getString("student_id") %>" 
-                                    name="student" size="15">
+                                    name="student" size="15" readonly="true">
                             </td>
 
                             <%-- Get the FIRSTNAME --%>
@@ -181,8 +183,13 @@
                                 <input value="<%= rs.getString("grade") %>" 
                                     name="grade" size="10">
                             </td>
-    
-                            
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("section_id") %>" name="oldSection">
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("quarter") %>" name="oldQuarter">
+
     
                             <%-- Button --%>
                             <td>

@@ -148,7 +148,7 @@
                             <%-- Get the SSN, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("faculty_id") %>" 
-                                    name="id" size="10">
+                                    name="id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the ID --%>

@@ -68,14 +68,15 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_enrollment SET course_id = ?, units = ? " +
+                            "UPDATE course_enrollment SET course_id = ?, units = ?, section_id = ? " +
                             "WHERE student_id = ? and section_id = ? ");
 
                         pstmt.setString(1, request.getParameter("course"));
                         pstmt.setInt(
                             2, Integer.parseInt(request.getParameter("units")));
-                        pstmt.setString(3, request.getParameter("student"));
-                        pstmt.setString(4, request.getParameter("section"));
+                        pstmt.setString(3, request.getParameter("section"));
+                        pstmt.setString(4, request.getParameter("student"));
+                        pstmt.setString(5, request.getParameter("oldSection"));
                         
                         int rowCount = pstmt.executeUpdate();
                         // Commit transaction
@@ -153,7 +154,7 @@
                             <%-- Get the LASTNAME --%>
                             <td>
                                 <input value="<%= rs.getString("student_id") %>" 
-                                    name="student" size="15">
+                                    name="student" size="15" readonly="true">
                             </td>
 
                             <%-- Get the FIRSTNAME --%>
@@ -173,6 +174,9 @@
                                 <input value="<%= rs.getInt("units") %>" 
                                     name="units" size="10">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("section_id") %>" name="oldSection">
     
                             
     
