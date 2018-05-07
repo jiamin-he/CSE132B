@@ -251,7 +251,7 @@
                 </td>
 
                 <td>
-                    
+                    <jsp:include page="course_number.jsp" />
                 </td>
 
            
