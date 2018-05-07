@@ -2,14 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -109,7 +102,11 @@
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
+                    <h4 >prerequisite information</h4>
+                
+
                     <tr>
+
                         <th>course_id</th>
                         <th>prerequisites_course_id</th>
 
@@ -146,7 +143,7 @@
                             <%-- Get the prerequisites_course_id --%>
                             <td>
                                 <input value="<%= rs.getString("prerequisites_course_id") %>" 
-                                    name="prerequisites_course_id" size="50">
+                                    name="prerequisites_course_id" size="10">
                             </td>
        
                             <%-- Button --%>
@@ -187,9 +184,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>

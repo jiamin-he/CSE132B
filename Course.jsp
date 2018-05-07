@@ -231,6 +231,14 @@
                 </table>
             </td>
         </tr>
+
+        <tr>
+            <td> </td>
+            <td valign="top">
+
+                <jsp:include page="course_prerequisites.jsp" />
+            </td>
+        </tr>
     </table>
 </body>
 
