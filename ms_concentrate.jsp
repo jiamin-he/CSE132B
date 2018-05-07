@@ -1,13 +1,7 @@
 <html>
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
+    
                 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -44,6 +38,8 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -58,17 +54,21 @@
                         // Create the prepared statement and use it to
                         // UPDATE the ms_concentrate  attributes in the ms_concentrate  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE ms_concentrate SET concentration = ?, course_id = ? WHERE degree_id = ?");
+                            "UPDATE ms_concentrate SET concentration = ?, course_id = ? WHERE degree_id = ? and concentration = ? and course_id = ?");
 
                         pstmt.setString(1, request.getParameter("concentration"));
                         pstmt.setString(2, (request.getParameter("course_id")));
 						pstmt.setString(3, request.getParameter("degree_id"));
+                        pstmt.setString(4, request.getParameter("old_con"));
+                        pstmt.setString(5, request.getParameter("old_cou"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -83,14 +83,18 @@
                         // Create the prepared statement and use it to
                         // DELETE the ms_concentrate  FROM the ms_concentrate  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM ms_concentrate  WHERE degree_id = ?");
+                            "DELETE FROM ms_concentrate  WHERE degree_id = ? and concentration = ? and course_id = ?");
 
                         pstmt.setString(1, request.getParameter("degree_id"));
+                        pstmt.setString(2, request.getParameter("concentration"));
+                        pstmt.setString(3, request.getParameter("course_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -108,6 +112,8 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4 >MS degree graduation concentration requirements</h4>
+
                         <th>degree_id</th>
                         <th>concentration</th>
                        	<th> course_id</th>
@@ -117,7 +123,7 @@
                         <form action="ms_concentrate.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="degree_id" size="10"></th>
-                            <th><input value="" name="concentration" size="10"></th>
+                            <th><input value="" name="concentration" size="20"></th>
                             <th><input value="" name="course_id" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
@@ -137,13 +143,13 @@
                             <%-- Get the degree_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("degree_id") %>" 
-                                    name="degree_id" size="10">
+                                    name="degree_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the concentration --%>
                             <td>
                                 <input value="<%= rs.getString("concentration") %>" 
-                                    name="concentration" size="50">
+                                    name="concentration" size="20">
                             </td>
     
                             <%-- Get the course_id --%>
@@ -151,6 +157,12 @@
                                 <input value="<%= rs.getString("course_id") %>"
                                     name="course_id" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("concentration") %>" name="old_con">
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("course_id") %>" name="old_cou">
 
                             <%-- Button --%>
                             <td>
@@ -161,6 +173,10 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("degree_id") %>" name="degree_id">
+                            <input type="hidden" 
+                                value="<%= rs.getString("concentration") %>" name="concentration">
+                            <input type="hidden" 
+                                value="<%= rs.getString("course_id") %>" name="course_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
@@ -188,9 +204,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+
 </body>
 
 </html>

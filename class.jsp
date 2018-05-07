@@ -225,6 +225,12 @@
                 </table>
             </td>
         </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="section.jsp" />
+            </td>
+        </tr>
     </table>
 </body>
 
