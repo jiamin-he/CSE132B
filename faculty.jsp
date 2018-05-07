@@ -207,6 +207,12 @@
                 </table>
             </td>
         </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="faculty_teach.jsp" />
+            </td>
+        </tr>
     </table>
 </body>
 

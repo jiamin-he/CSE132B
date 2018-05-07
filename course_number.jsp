@@ -112,6 +112,8 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4>course possible numbers</h4>
+                        
                         <th>course_id</th>
                         <th>course_number</th>
                        <th> valid_until</th>
