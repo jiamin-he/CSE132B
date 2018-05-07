@@ -104,7 +104,7 @@
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
-                    <h4 >graduation course categories requirement</h4>
+                    <h4 >courses available units</h4>
                 
 
                     <tr>

@@ -3,7 +3,6 @@
 
 <body>
     
-                
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -27,22 +26,21 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // INSERT the course_number  attributes INTO the course_number  table.
+                        // INSERT the course_categories  attributes INTO the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO course_number VALUES (?, ?, ?)");
+                            "INSERT INTO bs_ms VALUES (?, ?, ?, ?)");
 
-
-                        pstmt.setString(1, request.getParameter("course_id"));
-                        pstmt.setString(2, (request.getParameter("course_number")));
-                        pstmt.setString(3, (request.getParameter("valid_until")));
-                        
+                        pstmt.setString(1, request.getParameter("student"));
+                        pstmt.setString(2, request.getParameter("college"));
+                        pstmt.setString(3, request.getParameter("major"));
+                        pstmt.setString(4, request.getParameter("minor"));
+ 
                         int rowCount = pstmt.executeUpdate();
-                        
+
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
+                        response.sendRedirect("students.jsp");
                     }
             %>
 
@@ -55,21 +53,22 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // UPDATE the course_number  attributes in the course_number  	table.
+                        // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_number SET course_number = ?, valid_until = ? " + "WHERE course_id = ?");
+                            "UPDATE bs_ms SET college = ?, major = ?, " +
+                            "minor = ? WHERE student_id = ?");
 
-                        pstmt.setString(1, request.getParameter("course_number"));
-                        pstmt.setString(2, (request.getParameter("valid_until")));
-                        pstmt.setString(3, request.getParameter("course_id"));
+                        pstmt.setString(1, request.getParameter("college"));
+                        pstmt.setString(2, request.getParameter("major"));
+                        pstmt.setString(3, request.getParameter("minor"));
+                        pstmt.setString(4, request.getParameter("student"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
+                        response.sendRedirect("students.jsp");
                     }
             %>
 
@@ -82,18 +81,16 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // DELETE the course_number  FROM the course_number  table.
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_number  WHERE course_id = ?");
+                        // DELETE the course_categories  FROM the course_categories  table.
+                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM bs_ms WHERE student_id = ?");
 
-                        pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(1, request.getParameter("student"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
+                        response.sendRedirect("students.jsp");
                     }
             %>
 
@@ -103,29 +100,30 @@
                     Statement statement = conn.createStatement();
 
                     // Use the created statement to SELECT
-                    // the course_number  attributes FROM the course_number  table.
+                    // the course_categories  attributes FROM the course_categories  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM course_number ");
+                        ("SELECT * FROM bs_ms ");
             %>
-
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <h4>course possible numbers</h4>
-
-                        <th>course_id</th>
-                        <th>course_number</th>
-                       <th> valid_until</th>
+                        <h4>BS_MS</h4>
+                
+                        <th>student_id</th>
+                        <th>college</th>
+                       <th> major</th>
+                       <th>minor</th>
 
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="course_number.jsp" method="get">
+                        <form action="bs_ms.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="course_id" size="10"></th>
-                            <th><input value="" name="course_number" size="10"></th>
-                            <th><input value="" name="valid_until" size="15"></th>
+                            <th><input value="" name="student" size="10"></th>
+                            <th><input value="" name="college" size="15"></th>
+                            <th><input value="" name="major" size="15"></th>
+                            <th><input value="" name="minor" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -140,36 +138,44 @@
             %>
 
                     <tr>
-                        <form action="course_number.jsp" method="get">
+                        <form action="bs_ms.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
-                            <%-- Get the course_id, which is a number --%>
+                            <%-- Get the degree_id, which is a number --%>
                             <td>
-                                <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10" readonly="true">
+                                <input value="<%= rs.getString("student_id") %>" 
+                                    name="student" size="10" readonly="true">
                             </td>
     
-                            <%-- Get the course_number --%>
+                            <%-- Get the course_category --%>
                             <td>
-                                <input value="<%= rs.getString("course_number") %>" 
-                                    name="course_number" size="10">
+                                <input value="<%= rs.getString("college") %>" 
+                                    name="college" size="15">
                             </td>
     
-                            <%-- Get the valid_until --%>
+                            <%-- Get the min_units --%>
                             <td>
-                                <input value="<%= rs.getString("valid_until") %>"
-                                    name="valid_until" size="15">
-                            </td>    
-			   			       
+                                <input value="<%= rs.getString("major") %>"
+                                    name="major" size="15">
+                            </td>
+    
+                            <%-- Get the LASTNAME --%>
+                            <td>
+                                <input value="<%= rs.getString("minor") %>" 
+                                    name="minor" size="15">
+                            </td>
+    
+    
+                               
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="course_number.jsp" method="get">
+                        <form action="bs_ms.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("course_id") %>" name="course_id">
+                                value="<%= rs.getString("student_id") %>" name="student">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
