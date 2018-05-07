@@ -42,11 +42,10 @@
                         PreparedStatement pstmt = conn.prepareStatement(
                             "INSERT INTO student VALUES (?, ?, ?, ?, ?, ?,?)");
 
-                        pstmt.setInt(
-                            1, Integer.parseInt(request.getParameter("SSN")));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("SSN")));
                         pstmt.setString(2, request.getParameter("ID"));
                         pstmt.setString(3, request.getParameter("FIRSTNAME"));
-                       pstmt.setString(4, request.getParameter("MIDDLENAME"));
+                        pstmt.setString(4, request.getParameter("MIDDLENAME"));
                         pstmt.setString(5, request.getParameter("LASTNAME"));
                         pstmt.setString(6, request.getParameter("RESIDENCY"));
                         pstmt.setString(7, request.getParameter("RESIDENCY"));

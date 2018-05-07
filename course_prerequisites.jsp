@@ -9,7 +9,7 @@
                 <jsp:include page="menu.html" />
             </td>
             <td>
-                
+
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -33,15 +33,13 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // INSERT the review_session  attributes INTO the review_session  table.
+                        // INSERT the course_prerequisites  attributes INTO the course_prerequisites  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO review_session VALUES (?, ?, ?, ?)");
+                            "INSERT INTO course_prerequisites VALUES (?, ?)");
 
-                        pstmt.setString(1, request.getParameter("class_id"));
-                        pstmt.setString(2, (request.getParameter("rtime")));
-                        pstmt.setString(3, (request.getParameter("rdate")));
-                        pstmt.setString(4, request.getParameter("rlocation"));
-                        
+                        pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(2, (request.getParameter("prerequisites_course_id")));
+
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -59,17 +57,11 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // UPDATE the review_session  attributes in the review_session  table.
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE review_session SET rtime = ?, rdate = ?, " +
-                            "rlocation = ? WHERE class_id = ?");
+                        // UPDATE the course_prerequisites  attributes in the course_prerequisites  table.
+                        PreparedStatement pstmt = conn.prepareStatement("UPDATE course_prerequisites SET prerequisites_course_id = ? WHERE course_id = ?");
 
-
-                        pstmt.setString(1, request.getParameter("rtime"));
-                        pstmt.setString(2, (request.getParameter("rdate")));
-                        pstmt.setString(3, request.getParameter("rlocation"));
-
-                        pstmt.setString(4, request.getParameter("class_id"));
+                        pstmt.setString(1, request.getParameter("prerequisites_course_id"));
+                        pstmt.setString(2, request.getParameter("course_id"));
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -88,11 +80,14 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // DELETE the review_session  FROM the review_session  table.
+                        // DELETE the course_prerequisites  FROM the course_prerequisites  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM review_session  WHERE class_id = ?");
+                            "DELETE FROM course_prerequisites  WHERE course_id = ? AND prerequisites_course_id = ?");
 
-                        pstmt.setString(1, request.getParameter("class_id"));
+                        pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(2, request.getParameter("prerequisites_course_id"));
+
+                        
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -107,28 +102,24 @@
                     Statement statement = conn.createStatement();
 
                     // Use the created statement to SELECT
-                    // the review_session  attributes FROM the review_session  table.
+                    // the course_prerequisites  attributes FROM the course_prerequisites  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM review_session ");
+                        ("SELECT * FROM course_prerequisites ");
             %>
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <th>class_id</th>
-                        <th>rtime</th>
-                       <th> rdate</th>
-                       <th>rlocation</th>
+                        <th>course_id</th>
+                        <th>prerequisites_course_id</th>
 
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="reviewSession.jsp" method="get">
+                        <form action="course_prerequisites.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="class_id" size="10"></th>
-                            <th><input value="" name="rtime" size="10"></th>
-                            <th><input value="" name="rdate" size="15"></th>
-						    <th><input value="" name="rlocation" size="15"></th>
+                            <th><input value="" name="course_id" size="10"></th>
+                            <th><input value="" name="prerequisites_course_id" size="10"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -143,43 +134,30 @@
             %>
 
                     <tr>
-                        <form action="reviewSession.jsp" method="get">
+                        <form action="course_prerequisites.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
-                            <%-- Get the class_id, which is a number --%>
+                            <%-- Get the course_id, which is a number --%>
                             <td>
-                                <input value="<%= rs.getString("class_id") %>" 
-                                    name="class_id" size="10">
+                                <input value="<%= rs.getString("course_id") %>" 
+                                    name="course_id" size="10">
                             </td>
     
-                            <%-- Get the rtime --%>
+                            <%-- Get the prerequisites_course_id --%>
                             <td>
-                                <input value="<%= rs.getString("rtime") %>" 
-                                    name="rtime" size="50">
+                                <input value="<%= rs.getString("prerequisites_course_id") %>" 
+                                    name="prerequisites_course_id" size="50">
                             </td>
-    
-                            <%-- Get the rdate --%>
-                            <td>
-                                <input value="<%= rs.getString("rdate") %>"
-                                    name="rdate" size="15">
-                            </td>
-    
-                            <%-- Get the LASTNAME --%>
-                            <td>
-                                <input value="<%= rs.getString("rlocation") %>" 
-                                    name="rlocation" size="15">
-                            </td>
-    
-			   			       
+       
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="reviewSession.jsp" method="get">
+                        <form action="course_prerequisites.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("class_id") %>" name="class_id">
+                                value="<%= rs.getString("course_id") %>" name="course_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
