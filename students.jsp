@@ -7,7 +7,7 @@
                 <%-- -------- Include menu HTML code -------- --%>
                 <jsp:include page="menu.html" />
             </td>
-            <td >
+            <td colspan="2">
 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -237,6 +237,21 @@
             %>
                 </table>
             </td>
+        </tr>
+        <tr>
+            <td> </td>
+
+
+             <td>
+                <jsp:include page="past_degrees.jsp" />
+            </td>
+            
+            <td>
+                <jsp:include page="attendancy.jsp" />
+            </td>
+
+            
+            
         </tr>
         <tr>
             <td> </td>

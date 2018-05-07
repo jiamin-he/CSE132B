@@ -28,12 +28,12 @@
                         // Create the prepared statement and use it to
                         // INSERT the course_categories  attributes INTO the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO undergraduate VALUES (?, ?, ?, ?)");
+                            "INSERT INTO past_degrees VALUES (?, ?, ?, ?)");
 
                         pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("college"));
-                        pstmt.setString(3, request.getParameter("major"));
-                        pstmt.setString(4, request.getParameter("minor"));
+                        pstmt.setString(2, request.getParameter("ins"));
+                        pstmt.setString(3, request.getParameter("de"));
+                        pstmt.setString(4, request.getParameter("ma"));
  
                         int rowCount = pstmt.executeUpdate();
 
@@ -55,12 +55,12 @@
                         // Create the prepared statement and use it to
                         // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE undergraduate SET college = ?, major = ?, " +
-                            "minor = ? WHERE student_id = ?");
+                            "UPDATE past_degrees SET institution = ?, degree = ?, " +
+                            "major = ? WHERE student_id = ?");
 
-                        pstmt.setString(1, request.getParameter("college"));
-                        pstmt.setString(2, request.getParameter("major"));
-                        pstmt.setString(3, request.getParameter("minor"));
+                        pstmt.setString(1, request.getParameter("ins"));
+                        pstmt.setString(2, request.getParameter("de"));
+                        pstmt.setString(3, request.getParameter("ma"));
                         pstmt.setString(4, request.getParameter("student"));
 
                         int rowCount = pstmt.executeUpdate();
@@ -82,7 +82,7 @@
                         
                         // Create the prepared statement and use it to
                         // DELETE the course_categories  FROM the course_categories  table.
-                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM undergraduate WHERE student_id = ?");
+                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM past_degrees WHERE student_id = ?");
 
                         pstmt.setString(1, request.getParameter("student"));
                         int rowCount = pstmt.executeUpdate();
@@ -102,28 +102,28 @@
                     // Use the created statement to SELECT
                     // the course_categories  attributes FROM the course_categories  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM undergraduate ");
+                        ("SELECT * FROM past_degrees ");
             %>
 
             <!-- Add an HTML table header row to format the results -->
-                <table border="1" >
+                <table border="1">
                     <tr>
-                        <h4>undergraduate</h4>
+                        <h4>students' past degrees information</h4>
                 
                         <th>student_id</th>
-                        <th>college</th>
-                       <th> major</th>
-                       <th>minor</th>
+                        <th>institution</th>
+                       <th> degree</th>
+                       <th>major</th>
 
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="undergraduate.jsp" method="get">
+                        <form action="past_degrees.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="student" size="10"></th>
-                            <th><input value="" name="college" size="15"></th>
-                            <th><input value="" name="major" size="15"></th>
-                            <th><input value="" name="minor" size="15"></th>
+                            <th><input value="" name="ins" size="30"></th>
+                            <th><input value="" name="de" size="15"></th>
+                            <th><input value="" name="ma" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -138,7 +138,7 @@
             %>
 
                     <tr>
-                        <form action="undergraduate.jsp" method="get">
+                        <form action="past_degrees.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
                             <%-- Get the degree_id, which is a number --%>
@@ -149,20 +149,20 @@
     
                             <%-- Get the course_category --%>
                             <td>
-                                <input value="<%= rs.getString("college") %>" 
-                                    name="college" size="15">
+                                <input value="<%= rs.getString("institution") %>" 
+                                    name="ins" size="30">
                             </td>
     
                             <%-- Get the min_units --%>
                             <td>
-                                <input value="<%= rs.getString("major") %>"
-                                    name="major" size="15">
+                                <input value="<%= rs.getString("degree") %>"
+                                    name="de" size="15">
                             </td>
     
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("minor") %>" 
-                                    name="minor" size="15">
+                                <input value="<%= rs.getString("major") %>" 
+                                    name="ma" size="15">
                             </td>
     
     
@@ -172,7 +172,7 @@
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="undergraduate.jsp" method="get">
+                        <form action="past_degrees.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("student_id") %>" name="student">
