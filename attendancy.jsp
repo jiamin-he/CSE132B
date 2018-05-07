@@ -56,9 +56,9 @@
                             "UPDATE attendancy SET attendancy_period = ?" +
                             "WHERE student_id = ?");
 
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("att"));
                         
+                        pstmt.setString(1, request.getParameter("att"));
+                        pstmt.setString(2, request.getParameter("student"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
