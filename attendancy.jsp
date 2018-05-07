@@ -54,11 +54,13 @@
                         // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE attendancy SET attendancy_period = ?" +
-                            "WHERE student_id = ?");
+                            "WHERE student_id = ? and attendancy_period = ?");
 
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("att"));
                         
+                        pstmt.setString(1, request.getParameter("att"));
+                        pstmt.setString(2, request.getParameter("student"));
+                        pstmt.setString(3, request.getParameter("old_att"));
+
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -145,6 +147,9 @@
                                 <input value="<%= rs.getString("attendancy_period") %>" 
                                     name="att" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("attendancy_period") %>" name="old_att">
                                
                             <%-- Button --%>
                             <td>
