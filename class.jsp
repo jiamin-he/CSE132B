@@ -157,7 +157,7 @@
                             <%-- Get the class_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("class_id") %>" 
-                                    name="class_id" size="10">
+                                    name="class_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the title --%>

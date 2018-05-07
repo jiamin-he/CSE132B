@@ -1,6 +1,4 @@
-
 <html>
-
 
 <body>
     <table border="1">
@@ -18,9 +16,14 @@
             <%-- -------- Open Connection Code -------- --%>
             <%
                 try {
-                    Class.forName("org.postgresql.Driver");
-                    String dbURL = "jdbc:postgresql:cse132?user=postgres&password=admin";
-                    Connection conn = DriverManager.getConnection(dbURL);
+                    // Load Oracle Driver class file
+                    DriverManager.registerDriver
+                        (new org.postgresql.Driver());
+    
+                    // Make a connection to the Oracle datasource "cse132b"
+                    Connection conn = DriverManager.getConnection
+                        ("jdbc:postgresql:cse132?user=postgres&password=admin" 
+                          );
 
             %>
 
@@ -34,19 +37,13 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // INSERT the Course  attributes INTO the Course  table.
+                        // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO Course VALUES (?, ?, ?, ?, ?)");
+                            "INSERT INTO probation_info VALUES (?, ?, ?)");
 
-                        pstmt.setString(1, request.getParameter("course_id"));
-    
-                        pstmt.setString(2, (request.getParameter("course_number")));
-                        pstmt.setString(3, request.getParameter("require_consent"));
-                        pstmt.setString(4, request.getParameter("lab_required"));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("department_id")));
-
-
-
+                        pstmt.setString(1, request.getParameter("student"));
+                        pstmt.setString(2, request.getParameter("time"));
+                        pstmt.setString(3, request.getParameter("reason"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -64,24 +61,21 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // UPDATE the Course  attributes in the Course  table.
+                        // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE Course SET course_number = ?, require_consent = ?, " +
-                            "lab_required = ?,   department_id = ? WHERE course_id = ?");
+                            "UPDATE probation_info SET ptime = ? , preason = ? " +
+                            "WHERE student_id = ? and ptime = ? and preason = ?");
 
-
-                        pstmt.setString(1, request.getParameter("course_number"));
-                        pstmt.setString(2, request.getParameter("require_consent"));
-                        pstmt.setString(3, request.getParameter("lab_required"));
-
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("department_id")));
-
-                        pstmt.setString(5, request.getParameter("course_id"));
-
+                        pstmt.setString(1, request.getParameter("time"));
+                        pstmt.setString(2, request.getParameter("reason"));
+                        pstmt.setString(3, request.getParameter("student"));
+                        pstmt.setString(4, request.getParameter("oldTime"));
+                        pstmt.setString(5, request.getParameter("oldReason"));
+                        
+                        
                         int rowCount = pstmt.executeUpdate();
-
                         // Commit transaction
-                         conn.commit();
+                        conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -93,13 +87,16 @@
 
                         // Begin transaction
                         conn.setAutoCommit(false);
-
+                        
                         // Create the prepared statement and use it to
-                        // DELETE the Course  FROM the Course  table.
+                        // DELETE the student FROM the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM Course  WHERE course_id = ?");
+                            "DELETE FROM probation_info WHERE student_id = ? and ptime = ? and preason = ? ");
 
-                        pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(1, request.getParameter("student"));
+                        pstmt.setString(2, request.getParameter("time"));
+                        pstmt.setString(3, request.getParameter("reason"));
+                        
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -114,32 +111,25 @@
                     Statement statement = conn.createStatement();
 
                     // Use the created statement to SELECT
-                    // the Course  attributes FROM the Course  table.
+                    // the student attributes FROM the Student table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM Course ");
+                        ("SELECT * FROM probation_info");
             %>
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <th>course_id</th>
-                        <th>course_number</th>
-                       <th> require_consent</th>
-                       <th>lab_required</th>
-
-                       <th>department_id</th>
-
+                        <th>studentID</th>
+                        <th>time</th>
+                        <th>reason</th>
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="Course.jsp" method="get">
+                        <form action="probation_info.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="course_id" size="10"></th>
-                            <th><input value="" name="course_number" size="10"></th>
-                            <th><input value="" name="require_consent" size="15"></th>
-						    <th><input value="" name="lab_required" size="15"></th>
-						    <th><input value="" name="department_id" size="15"></th>
-
+                            <th><input value="" name="student" size="10"></th>
+                            <th><input value="" name="time" size="10"></th>
+                            <th><input value="" name="reason" size="30"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -149,56 +139,51 @@
                     // Iterate over the ResultSet
         
                     while ( rs.next() ) {
-
+        
             %>
 
                     <tr>
-                        <form action="Course.jsp" method="get">
+                        <form action="probation_info.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
-                            <%-- Get the course_id, which is a number --%>
-                            <td>
-                                <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10" readonly="true">
-                            </td>
-    
-                            <%-- Get the course_number --%>
-                            <td>
-                                <input value="<%= rs.getString("course_number") %>" 
-                                    name="course_number" size="10">
-                            </td>
-    
-                            <%-- Get the require_consent --%>
-                            <td>
-                                <input value="<%= rs.getString("require_consent") %>"
-                                    name="require_consent" size="15">
-
-                            </td>
-    
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("lab_required") %>" 
-                                    name="lab_required" size="15">
+                                <input value="<%= rs.getString("student_id") %>" 
+                                    name="student" size="15">
                             </td>
-    
 
-
-<%-- Get the LASTNAME --%>
+                            <%-- Get the FIRSTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("department_id") %>" 
-                                    name="department_id" size="15">
+                                <input value="<%= rs.getString("ptime") %>"
+                                    name="time" size="10">
                             </td>
-    
-			   			       
+
+                             <%-- Get the FIRSTNAME --%>
+                            <td>
+                                <input value="<%= rs.getString("preason") %>"
+                                    name="reason" size="30">
+                            </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("preason") %>" name="oldReason">
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("ptime") %>" name="oldTime">
+
+                           
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="Course.jsp" method="get">
+                        <form action="probation_info.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
+                            <input type="hidden"
+                                value="<%= rs.getString("student_id") %>" name="student" readonly="true">
                             <input type="hidden" 
-                                value="<%= rs.getString("course_id") %>" name="course_id">
+                                value="<%= rs.getString("ptime") %>" name="time">
+                            <input type="hidden" 
+                                value="<%= rs.getString("preason") %>" name="reason">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

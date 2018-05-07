@@ -168,7 +168,7 @@
                             <%-- Get the ID --%>
                             <td>
                                 <input value="<%= rs.getString("student_id") %>" 
-                                    name="ID" size="10">
+                                    name="ID" size="10" readonly="true">
                             </td>
     
                             <%-- Get the FIRSTNAME --%>
