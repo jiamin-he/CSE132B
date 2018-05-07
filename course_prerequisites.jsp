@@ -82,7 +82,7 @@
                         // Create the prepared statement and use it to
                         // DELETE the course_prerequisites  FROM the course_prerequisites  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_prerequisites  WHERE course_id = ? AND prerequisites_course_id = ?");
+                            "DELETE FROM course_prerequisites WHERE course_id = ? AND prerequisites_course_id = ?");
 
                         pstmt.setString(1, request.getParameter("course_id"));
                         pstmt.setString(2, request.getParameter("prerequisites_course_id"));
@@ -156,8 +156,10 @@
                         </form>
                         <form action="course_prerequisites.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
-                            <input type="hidden" 
+                            <input type="hidden"
                                 value="<%= rs.getString("course_id") %>" name="course_id">
+                            <input type="hidden"
+                                value="<%= rs.getString("prerequisites_course_id") %>" name="prerequisites_course_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

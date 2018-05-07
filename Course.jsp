@@ -45,8 +45,6 @@
                         pstmt.setString(4, request.getParameter("lab_required"));
                         pstmt.setInt(5, Integer.parseInt(request.getParameter("department_id")));
 
-
-
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -55,7 +53,7 @@
                     }
             %>
 
-            
+
 
 
             <%-- -------- UPDATE Code -------- --%>
