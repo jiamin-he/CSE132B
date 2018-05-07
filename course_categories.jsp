@@ -1,5 +1,6 @@
 <html>
 
+
 <body>
     <table border="1">
         <tr>
@@ -16,14 +17,9 @@
             <%-- -------- Open Connection Code -------- --%>
             <%
                 try {
-                    // Load Oracle Driver class file
-                    DriverManager.registerDriver
-                        (new org.postgresql.Driver());
-    
-                    // Make a connection to the Oracle datasource "cse132b"
-                    Connection conn = DriverManager.getConnection
-                        ("jdbc:postgresql:cse132?user=postgres&password=admin" 
-                          );
+                    Class.forName("org.postgresql.Driver");
+                    String dbURL = "jdbc:postgresql:cse132?user=postgres&password=admin";
+                    Connection conn = DriverManager.getConnection(dbURL);
 
             %>
 
@@ -37,17 +33,15 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // INSERT the student attributes INTO the Student table.
+                        // INSERT the course_categories  attributes INTO the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO course_enrollment VALUES (?, ?, ?, ?)");
+                            "INSERT INTO course_categories VALUES (?, ?, ?, ?)");
 
-                        
-                        
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("course"));
-                        pstmt.setString(3, request.getParameter("section"));
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
-                        
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("degree_id")));
+                        pstmt.setString(2, (request.getParameter("course_category")));
+                        pstmt.setInt(3, Integer.parseInt(request.getParameter("min_units")));
+                        pstmt.setString(4, request.getParameter("min_avg_grade"));
+ 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -65,21 +59,21 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // UPDATE the student attributes in the Student table.
+                        // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_enrollment SET course_id = ?, units = ?, section_id = ? " +
-                            "WHERE student_id = ? and section_id = ? ");
+                            "UPDATE course_categories SET course_category = ?, min_units = ?, " +
+                            "min_avg_grade = ? WHERE degree_id = ?");
 
-                        pstmt.setString(1, request.getParameter("course"));
-                        pstmt.setInt(
-                            2, Integer.parseInt(request.getParameter("units")));
-                        pstmt.setString(3, request.getParameter("section"));
-                        pstmt.setString(4, request.getParameter("student"));
-                        pstmt.setString(5, request.getParameter("oldSection"));
-                        
+                        pstmt.setString(1, request.getParameter("course_category"));
+                        pstmt.setInt(2, Integer.parseInt(request.getParameter("min_units")));
+                        pstmt.setString(3, request.getParameter("min_avg_grade"));
+
+                        pstmt.setInt(4, Integer.parseInt(request.getParameter("degree_id")));
+
                         int rowCount = pstmt.executeUpdate();
+
                         // Commit transaction
-                        conn.commit();
+                         conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -93,12 +87,10 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // DELETE the student FROM the Student table.
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_enrollment WHERE student_id = ? and section_id = ?");
+                        // DELETE the course_categories  FROM the course_categories  table.
+                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM course_categories WHERE degree_id = ?");
 
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("section"));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("degree_id")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -113,27 +105,29 @@
                     Statement statement = conn.createStatement();
 
                     // Use the created statement to SELECT
-                    // the student attributes FROM the Student table.
+                    // the course_categories  attributes FROM the course_categories  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM course_enrollment");
+                        ("SELECT * FROM course_categories ");
             %>
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <th>studentID</th>
-                        <th>courseID</th>
-                        <th>sectionID</th>
-			            <th>units</th>
+                        <th>degree_id</th>
+                        <th>course_category</th>
+                       <th> min_units</th>
+                       <th>min_avg_grade</th>
+
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="CourseEnrollment.jsp" method="get">
+                        <form action="course_categories.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="student" size="10"></th>
-                            <th><input value="" name="course" size="10"></th>
-                            <th><input value="" name="section" size="15"></th>
-			    <th><input value="" name="units" size="15"></th>
+                            <th><input value="" name="degree_id" size="10"></th>
+                            <th><input value="" name="course_category" size="10"></th>
+                            <th><input value="" name="min_units" size="15"></th>
+						    <th><input value="" name="min_avg_grade" size="15"></th>
+
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -143,53 +137,48 @@
                     // Iterate over the ResultSet
         
                     while ( rs.next() ) {
-        
+
             %>
 
                     <tr>
-                        <form action="CourseEnrollment.jsp" method="get">
+                        <form action="course_categories.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
+                            <%-- Get the degree_id, which is a number --%>
+                            <td>
+                                <input value="<%= rs.getString("degree_id") %>" 
+                                    name="degree_id" size="10" readonly="true">
+                            </td>
+    
+                            <%-- Get the course_category --%>
+                            <td>
+                                <input value="<%= rs.getString("course_category") %>" 
+                                    name="course_category" size="50">
+                            </td>
+    
+                            <%-- Get the min_units --%>
+                            <td>
+                                <input value="<%= rs.getString("min_units") %>"
+                                    name="min_units" size="15">
+                            </td>
+    
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("student_id") %>" 
-                                    name="student" size="15" readonly="true">
-                            </td>
-
-                            <%-- Get the FIRSTNAME --%>
-                            <td>
-                                <input value="<%= rs.getString("course_id") %>"
-                                    name="course" size="15">
+                                <input value="<%= rs.getString("min_avg_grade") %>" 
+                                    name="min_avg_grade" size="15">
                             </td>
     
-                            <%-- Get the ID --%>
-                            <td>
-                                <input value="<%= rs.getString("section_id") %>" 
-                                    name="section" size="10">
-                            </td>
-
-                            <%-- Get the courseID, which is a number --%>
-                            <td>
-                                <input value="<%= rs.getInt("units") %>" 
-                                    name="units" size="10">
-                            </td>
-
-                            <input type="hidden" 
-                                value="<%= rs.getString("section_id") %>" name="oldSection">
     
-                            
-    
+			   			       
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="CourseEnrollment.jsp" method="get">
+                        <form action="course_categories.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("section_id") %>" name="section">
-                            <input type="hidden" 
-                                value="<%= rs.getString("student_id") %>" name="student">
+                                value="<%= rs.getString("degree_id") %>" name="degree_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
