@@ -63,7 +63,7 @@
                         // UPDATE the review_session  attributes in the review_session  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE review_session SET rtime = ?, rdate = ?, " +
-                            "rlocation = ?, WHERE class_id = ?");
+                            "rlocation = ? WHERE class_id = ?");
 
 
                         pstmt.setString(1, request.getParameter("rtime"));
