@@ -35,24 +35,54 @@
 
                         // Begin transaction
                         conn.setAutoCommit(false);
-                        
-                        // Create the prepared statement and use it to
-                        // INSERT the student attributes INTO the Student table.
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO course_enrollment VALUES (?, ?, ?, ?)");
 
-                        
-                        
-                        pstmt.setString(1, request.getParameter("student"));
-                        pstmt.setString(2, request.getParameter("course"));
-                        pstmt.setString(3, request.getParameter("section"));
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
-                        
-                        int rowCount = pstmt.executeUpdate();
+                        String qry = "select count(*) from class join course on class.course_id = course.course_id join section on class.class_id = section.class_id where course.course_id = ? and section.section_id = ? ";
+                        PreparedStatement pre_pstmt = conn.prepareStatement(qry);
+                        pre_pstmt.setString(1, request.getParameter("course"));
+                        pre_pstmt.setString(2, request.getParameter("section"));
 
-                        // Commit transaction
-                        conn.commit();
-                        conn.setAutoCommit(true);
+                        ResultSet checkRs = pre_pstmt.executeQuery();
+                        Long pairCheck = new Long(0);
+                        if(checkRs.next()){
+                            pairCheck = (Long) checkRs.getObject("count");
+                        }
+                        //conn.rollback();
+                        if(pairCheck > 0 ) {
+
+                            String qry2 = "select count(*) from course_units where course_id = ? and units = ? ";
+                            PreparedStatement pre_pstmt2 = conn.prepareStatement(qry2);
+                            pre_pstmt2.setString(1, request.getParameter("course"));
+                            
+                            pre_pstmt2.setInt(
+                            2, Integer.parseInt(request.getParameter("units")));
+
+                            ResultSet checkRs2 = pre_pstmt2.executeQuery();
+                            Long pairCheck2 = new Long(0);
+                            if(checkRs2.next()){
+                                pairCheck2 = (Long) checkRs2.getObject("count");
+                            }
+
+                            if(pairCheck2 > 0 ) {
+
+                            //
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "INSERT INTO course_enrollment VALUES (?, ?, ?, ?)");
+
+                            
+                            
+                            pstmt.setString(1, request.getParameter("student"));
+                            pstmt.setString(2, request.getParameter("course"));
+                            pstmt.setString(3, request.getParameter("section"));
+                            pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
+                            
+                            int rowCount = pstmt.executeUpdate();
+
+                            // Commit transaction
+                            conn.commit();
+                            conn.setAutoCommit(true);
+                          }
+                        } 
+                        
                     }
             %>
 

@@ -35,6 +35,19 @@
 
                         // Begin transaction
                         conn.setAutoCommit(false);
+
+                        String qry = "select count(*) from class join course on class.course_id = course.course_id join section on class.class_id = section.class_id where course.course_id = ? and section.section_id = ? ";
+                        PreparedStatement pre_pstmt = conn.prepareStatement(qry);
+                        pre_pstmt.setString(1, request.getParameter("course"));
+                        pre_pstmt.setString(2, request.getParameter("section"));
+
+                        ResultSet checkRs = pre_pstmt.executeQuery();
+                        Long pairCheck = new Long(0);
+                        if(checkRs.next()){
+                            pairCheck = (Long) checkRs.getObject("count");
+                        }
+
+                        if(pairCheck > 0) {
                         
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
@@ -53,6 +66,7 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+                      }
                     }
             %>
 
@@ -63,6 +77,8 @@
 
                         // Begin transaction
                         conn.setAutoCommit(false);
+
+                        
                         
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
@@ -82,6 +98,7 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+                    
                     }
             %>
 
