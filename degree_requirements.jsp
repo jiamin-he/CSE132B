@@ -7,7 +7,7 @@
                 <%-- -------- Include menu HTML code -------- --%>
                 <jsp:include page="menu.html" />
             </td>
-            <td>
+            <td colspan="2">
 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -156,7 +156,7 @@
                             <%-- Get the unit --%>
                             <td>
                                 <input value="<%= rs.getString("unit") %>" 
-                                    name="unit" size="50">
+                                    name="unit" size="10">
                             </td>
     
                             <%-- Get the department_id --%>
@@ -209,6 +209,12 @@
                 }
             %>
                 </table>
+            </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="course_categories.jsp" />
             </td>
         </tr>
     </table>
