@@ -43,7 +43,7 @@
                         pstmt.setString(3, (request.getParameter("valid_until")));
                         
                         int rowCount = pstmt.executeUpdate();
-
+                        
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
