@@ -2,14 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -82,7 +75,7 @@
                         // Create the prepared statement and use it to
                         // DELETE the course_prerequisites  FROM the course_prerequisites  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_prerequisites  WHERE course_id = ? AND prerequisites_course_id = ?");
+                            "DELETE FROM course_prerequisites WHERE course_id = ? AND prerequisites_course_id = ?");
 
                         pstmt.setString(1, request.getParameter("course_id"));
                         pstmt.setString(2, request.getParameter("prerequisites_course_id"));
@@ -109,7 +102,11 @@
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
+                    <h4 >prerequisite information</h4>
+                
+
                     <tr>
+
                         <th>course_id</th>
                         <th>prerequisites_course_id</th>
 
@@ -146,7 +143,7 @@
                             <%-- Get the prerequisites_course_id --%>
                             <td>
                                 <input value="<%= rs.getString("prerequisites_course_id") %>" 
-                                    name="prerequisites_course_id" size="50">
+                                    name="prerequisites_course_id" size="10">
                             </td>
        
                             <%-- Button --%>
@@ -156,8 +153,10 @@
                         </form>
                         <form action="course_prerequisites.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
-                            <input type="hidden" 
+                            <input type="hidden"
                                 value="<%= rs.getString("course_id") %>" name="course_id">
+                            <input type="hidden"
+                                value="<%= rs.getString("prerequisites_course_id") %>" name="prerequisites_course_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
@@ -185,9 +184,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>

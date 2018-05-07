@@ -45,8 +45,6 @@
                         pstmt.setString(4, request.getParameter("lab_required"));
                         pstmt.setInt(5, Integer.parseInt(request.getParameter("department_id")));
 
-
-
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -54,6 +52,9 @@
                         conn.setAutoCommit(true);
                     }
             %>
+
+
+
 
             <%-- -------- UPDATE Code -------- --%>
             <%
@@ -83,6 +84,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        
                     }
             %>
 
@@ -228,7 +231,16 @@
                 </table>
             </td>
         </tr>
+
+        <tr>
+            <td> </td>
+            <td valign="top">
+
+                <jsp:include page="course_prerequisites.jsp" />
+            </td>
+        </tr>
     </table>
 </body>
+
 
 </html>
