@@ -254,6 +254,14 @@
             
         </tr>
 
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="graduate.jsp" />
+            </td>
+            
+        </tr>
+
     </table>
 </body>
 
