@@ -1,14 +1,7 @@
 <html>
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-                
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -39,13 +32,14 @@
                         pstmt.setString(1, request.getParameter("student_id"));
                         pstmt.setString(2, (request.getParameter("course_id")));
                         pstmt.setString(3, (request.getParameter("section_id")));
-                        pstmt.setString(4, request.getParameter("units"));
-                        
+                        pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("CourseEnrollment.jsp");
                     }
             %>
 
@@ -65,8 +59,7 @@
 
                         pstmt.setString(1, request.getParameter("course_id"));
                         pstmt.setString(2, (request.getParameter("section_id")));
-                        pstmt.setString(3, request.getParameter("units"));
-
+                        pstmt.setInt(3, Integer.parseInt(request.getParameter("units")));
                         pstmt.setString(4, request.getParameter("student_id"));
 
                         int rowCount = pstmt.executeUpdate();
@@ -74,6 +67,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("CourseEnrollment.jsp");
                     }
             %>
 
@@ -95,6 +90,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("CourseEnrollment.jsp");
                     }
             %>
 
@@ -112,6 +109,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> Course Enrollment Waitlist</h4>
                         <th>student_id</th>
                         <th>course_id</th>
                        <th> section_id</th>
@@ -152,7 +150,7 @@
                             <%-- Get the course_id --%>
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="50">
+                                    name="course_id" size="10">
                             </td>
     
                             <%-- Get the section_id --%>
@@ -163,7 +161,7 @@
     
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("units") %>" 
+                                <input value="<%= rs.getInt("units") %>" 
                                     name="units" size="15">
                             </td>
     
@@ -204,9 +202,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>

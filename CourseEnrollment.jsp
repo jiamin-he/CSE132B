@@ -151,6 +151,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4>Course Enrollment</h4>
                         <th>studentID</th>
                         <th>courseID</th>
                         <th>sectionID</th>
@@ -247,6 +248,12 @@
                 }
             %>
                 </table>
+            </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="course_waitlist.jsp" />
             </td>
         </tr>
     </table>

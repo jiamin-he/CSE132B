@@ -115,6 +115,8 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4>graduation degree requirements</h4>
+
                         <th>degree_id</th>
                         <th>unit</th>
                        <th> department_id</th>

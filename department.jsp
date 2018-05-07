@@ -117,6 +117,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>   
+                        <h4 >departments</h4>
                         <th>department_id</th>
                         <th>department_name</th>
 

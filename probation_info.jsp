@@ -119,6 +119,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> students' probation information</h4>
                         <th>studentID</th>
                         <th>time</th>
                         <th>reason</th>

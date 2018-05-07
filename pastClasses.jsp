@@ -140,6 +140,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> Students' past classes</h4>
                         <th>studentID</th>
                         <th>courseID</th>
                         <th>quarter</th>

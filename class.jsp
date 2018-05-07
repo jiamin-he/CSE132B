@@ -8,7 +8,7 @@
                 <%-- -------- Include menu HTML code -------- --%>
                 <jsp:include page="menu.html" />
             </td>
-            <td>
+            <td colspan="2">
 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -120,6 +120,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> Classes</h4>
                         <th>class_id</th>
                         <th>title</th>
                        <th> year</th>
@@ -229,6 +230,9 @@
             <td> </td>
             <td>
                 <jsp:include page="section.jsp" />
+            </td>
+            <td>
+                <jsp:include page="meeting.jsp" />
             </td>
         </tr>
     </table>

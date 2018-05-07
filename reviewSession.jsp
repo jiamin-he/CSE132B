@@ -115,6 +115,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> review session info submission form</h4>
                         <th>class_id</th>
                         <th>rtime</th>
                        <th> rdate</th>
@@ -155,7 +156,7 @@
                             <%-- Get the rtime --%>
                             <td>
                                 <input value="<%= rs.getString("rtime") %>" 
-                                    name="rtime" size="50">
+                                    name="rtime" size="15">
                             </td>
     
                             <%-- Get the rdate --%>

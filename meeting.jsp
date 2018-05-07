@@ -2,14 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -54,6 +47,8 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -83,6 +78,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -105,6 +102,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -122,12 +121,13 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> Lectures, Discussions, etc. for Sections</h4>
                         <th>section_id</th>
                         <th>category</th>
                        <th> isweekly</th>
                        <th>mtime</th>
                        <th>mdate</th>
-                       <th>mlocation</th>>
+                       <th>mlocation</th>
 
                         <th>Action</th>
                     </tr>
@@ -166,7 +166,7 @@
                             <%-- Get the category --%>
                             <td>
                                 <input value="<%= rs.getString("category") %>" 
-                                    name="category" size="50">
+                                    name="category" size="15">
                             </td>
     
                             <%-- Get the isweekly --%>
@@ -230,9 +230,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+
 </body>
 
 </html>
