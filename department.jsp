@@ -147,7 +147,7 @@
                             <%-- Get the department_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("department_id") %>" 
-                                    name="department_id" size="10">
+                                    name="department_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the department_name --%>

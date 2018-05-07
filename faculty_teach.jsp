@@ -2,14 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-                
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -47,6 +40,8 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("faculty.jsp");
                     }
             %>
 
@@ -76,6 +71,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("faculty.jsp");
                     }
             %>
 
@@ -98,6 +95,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("faculty.jsp");
                     }
             %>
 
@@ -115,6 +114,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4> faculty teaching sections:</h4>
                         <th>faculty_id</th>
                         <th>faculty_name</th>
                        <th> section_id</th>
@@ -126,7 +126,7 @@
                         <form action="faculty_teach.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="faculty_id" size="10"></th>
-                            <th><input value="" name="faculty_name" size="10"></th>
+                            <th><input value="" name="faculty_name" size="15"></th>
                             <th><input value="" name="section_id" size="15"></th>
 						    <th><input value="" name="teach_time" size="15"></th>
 
@@ -155,7 +155,7 @@
                             <%-- Get the faculty_name --%>
                             <td>
                                 <input value="<%= rs.getString("faculty_name") %>" 
-                                    name="faculty_name" size="50">
+                                    name="faculty_name" size="15">
                             </td>
     
                             <%-- Get the section_id --%>
@@ -207,9 +207,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>
