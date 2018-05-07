@@ -2,14 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
-
+    
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>
@@ -37,7 +30,7 @@
                         PreparedStatement pstmt = conn.prepareStatement(
                             "INSERT INTO course_categories VALUES (?, ?, ?, ?)");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("degree_id")));
+                        pstmt.setString(1, request.getParameter("degree_id"));
                         pstmt.setString(2, (request.getParameter("course_category")));
                         pstmt.setInt(3, Integer.parseInt(request.getParameter("min_units")));
                         pstmt.setString(4, request.getParameter("min_avg_grade"));
@@ -47,6 +40,7 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -68,13 +62,14 @@
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("min_units")));
                         pstmt.setString(3, request.getParameter("min_avg_grade"));
 
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("degree_id")));
+                        pstmt.setString(4, request.getParameter("degree_id"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -90,12 +85,13 @@
                         // DELETE the course_categories  FROM the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement("DELETE FROM course_categories WHERE degree_id = ?");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("degree_id")));
+                        pstmt.setString(1, request.getParameter("degree_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+                        response.sendRedirect("degree_requirements.jsp");
                     }
             %>
 
@@ -113,6 +109,8 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
+                        <h4 >graduation course category requirements</h4>
+                
                         <th>degree_id</th>
                         <th>course_category</th>
                        <th> min_units</th>
@@ -124,9 +122,9 @@
                         <form action="course_categories.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="degree_id" size="10"></th>
-                            <th><input value="" name="course_category" size="10"></th>
+                            <th><input value="" name="course_category" size="15"></th>
                             <th><input value="" name="min_units" size="15"></th>
-						    <th><input value="" name="min_avg_grade" size="15"></th>
+                            <th><input value="" name="min_avg_grade" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -153,7 +151,7 @@
                             <%-- Get the course_category --%>
                             <td>
                                 <input value="<%= rs.getString("course_category") %>" 
-                                    name="course_category" size="50">
+                                    name="course_category" size="15">
                             </td>
     
                             <%-- Get the min_units --%>
@@ -169,7 +167,7 @@
                             </td>
     
     
-			   			       
+                               
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
@@ -206,9 +204,8 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>
+

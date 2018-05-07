@@ -2,13 +2,7 @@
 
 
 <body>
-    <table border="1">
-        <tr>
-            <td valign="top">
-                <%-- -------- Include menu HTML code -------- --%>
-                <jsp:include page="menu.html" />
-            </td>
-            <td>
+    
                 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -47,6 +41,8 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -72,6 +68,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -94,6 +92,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -144,13 +144,13 @@
                             <%-- Get the course_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10">
+                                    name="course_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the course_number --%>
                             <td>
                                 <input value="<%= rs.getString("course_number") %>" 
-                                    name="course_number" size="50">
+                                    name="course_number" size="10">
                             </td>
     
                             <%-- Get the valid_until --%>
@@ -195,9 +195,7 @@
                 }
             %>
                 </table>
-            </td>
-        </tr>
-    </table>
+            
 </body>
 
 </html>
