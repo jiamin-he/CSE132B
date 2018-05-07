@@ -38,6 +38,8 @@
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
+
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -51,16 +53,19 @@
                         
                         // Create the prepared statement and use it to
                         // UPDATE the course_prerequisites  attributes in the course_prerequisites  table.
-                        PreparedStatement pstmt = conn.prepareStatement("UPDATE course_prerequisites SET prerequisites_course_id = ? WHERE course_id = ?");
+                        PreparedStatement pstmt = conn.prepareStatement("UPDATE course_prerequisites SET prerequisites_course_id = ?, course_id = ? WHERE prerequisites_course_id = ? and course_id = ?");
 
                         pstmt.setString(1, request.getParameter("prerequisites_course_id"));
                         pstmt.setString(2, request.getParameter("course_id"));
+                        pstmt.setString(3, request.getParameter("old_prerequisites_course_id"));
+                        pstmt.setString(4, request.getParameter("old_course_id"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -86,6 +91,7 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -137,7 +143,7 @@
                             <%-- Get the course_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10">
+                                    name="course_id" size="10" readonly="true">
                             </td>
     
                             <%-- Get the prerequisites_course_id --%>
@@ -145,6 +151,12 @@
                                 <input value="<%= rs.getString("prerequisites_course_id") %>" 
                                     name="prerequisites_course_id" size="10">
                             </td>
+
+                            <input type="hidden"
+                                value="<%= rs.getString("course_id") %>" name="old_course_id">
+
+                            <input type="hidden"
+                                value="<%= rs.getString("prerequisites_course_id") %>" name="old_prerequisites_course_id">
        
                             <%-- Button --%>
                             <td>
