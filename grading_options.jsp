@@ -75,9 +75,10 @@
                         
                         // Create the prepared statement and use it to
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_grading_options WHERE course_id = ? ");
+                            "DELETE FROM course_grading_options WHERE course_id = ? and grading_option = ?");
 
                         pstmt.setString(1, request.getParameter("course"));
+                        pstmt.setString(2, request.getParameter("option"));
                         
                         int rowCount = pstmt.executeUpdate();
 
@@ -154,6 +155,8 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden"
                                 value="<%= rs.getString("course_id") %>" name="course">
+                            <input type="hidden"
+                                value="<%= rs.getString("grading_option") %>" name="option">
                             
                             <%-- Button --%>
                             <td>
