@@ -55,6 +55,9 @@
                     }
             %>
 
+            
+
+
             <%-- -------- UPDATE Code -------- --%>
             <%
                     // Check if an update is requested
@@ -83,6 +86,8 @@
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
+
+                        
                     }
             %>
 
@@ -230,5 +235,6 @@
         </tr>
     </table>
 </body>
+
 
 </html>

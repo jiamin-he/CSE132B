@@ -10,7 +10,7 @@
                 <jsp:include page="menu.html" />
             </td>
             <td>
-
+                
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
             <%@ page language="java" import="java.sql.*" %>

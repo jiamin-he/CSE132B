@@ -66,7 +66,7 @@
 
 
                         pstmt.setInt( 1, Integer.parseInt(request.getParameter("unit")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("department_id")));
+                        pstmt.setString(2, request.getParameter("department_id"));
                         pstmt.setString(3, request.getParameter("cur_degree"));
 
                         pstmt.setString(4, request.getParameter("degree_id"));
