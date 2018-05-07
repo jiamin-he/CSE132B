@@ -2,7 +2,13 @@
 
 
 <body>
-    
+    <table border="1">
+        <tr>
+            <td valign="top">
+                <%-- -------- Include menu HTML code -------- --%>
+                <jsp:include page="menu.html" />
+            </td>
+            <td>
                 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -27,22 +33,19 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // INSERT the course_number  attributes INTO the course_number  table.
+                        // INSERT the department  attributes INTO the department  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO course_number VALUES (?, ?, ?)");
+                            "INSERT INTO department VALUES (?, ?)");
 
 
-                        pstmt.setString(1, request.getParameter("course_id"));
-                        pstmt.setString(2, (request.getParameter("course_number")));
-                        pstmt.setString(3, (request.getParameter("valid_until")));
-                        
+                        pstmt.setString(1, request.getParameter("department_id"));
+                        pstmt.setString(2, (request.getParameter("department_name")));
+                   
                         int rowCount = pstmt.executeUpdate();
-                        
+
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -55,21 +58,19 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // UPDATE the course_number  attributes in the course_number  	table.
+                        // UPDATE the department  attributes in the department  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_number SET course_number = ?, valid_until = ? " + "WHERE course_id = ?");
+                            "UPDATE department SET department_name = ? WHERE department_id = ?");
 
-                        pstmt.setString(1, request.getParameter("course_number"));
-                        pstmt.setString(2, (request.getParameter("valid_until")));
-                        pstmt.setString(3, request.getParameter("course_id"));
+                        pstmt.setString(1, request.getParameter("department_name"));
+
+                        pstmt.setString(2, request.getParameter("department_id"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -82,18 +83,16 @@
                         conn.setAutoCommit(false);
                         
                         // Create the prepared statement and use it to
-                        // DELETE the course_number  FROM the course_number  table.
+                        // DELETE the department  FROM the department  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_number  WHERE course_id = ?");
+                            "DELETE FROM department  WHERE department_id = ?");
 
-                        pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(1, request.getParameter("department_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-
-                        response.sendRedirect("Course.jsp");
                     }
             %>
 
@@ -103,27 +102,31 @@
                     Statement statement = conn.createStatement();
 
                     // Use the created statement to SELECT
-                    // the course_number  attributes FROM the course_number  table.
+                    // the department  attributes FROM the department  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM course_number ");
+                        ("SELECT * FROM department ");
             %>
+
+
+
+
+
+
 
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
-                    <tr>
-                        <th>course_id</th>
-                        <th>course_number</th>
-                       <th> valid_until</th>
+                    <tr>   
+                        <th>department_id</th>
+                        <th>department_name</th>
 
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="course_number.jsp" method="get">
+                        <form action="department.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="course_id" size="10"></th>
-                            <th><input value="" name="course_number" size="10"></th>
-                            <th><input value="" name="valid_until" size="15"></th>
+                            <th><input value="" name="department_id" size="10"></th>
+                            <th><input value="" name="department_name" size="10"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -138,36 +141,33 @@
             %>
 
                     <tr>
-                        <form action="course_number.jsp" method="get">
+                        <form action="department.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
-                            <%-- Get the course_id, which is a number --%>
+                            <%-- Get the department_id, which is a number --%>
                             <td>
-                                <input value="<%= rs.getString("course_id") %>" 
-                                    name="course_id" size="10" readonly="true">
+                                <input value="<%= rs.getString("department_id") %>" 
+                                    name="department_id" size="10">
                             </td>
     
-                            <%-- Get the course_number --%>
+                            <%-- Get the department_name --%>
                             <td>
-                                <input value="<%= rs.getString("course_number") %>" 
-                                    name="course_number" size="10">
+                                <input value="<%= rs.getString("department_name") %>" 
+                                    name="department_name" size="50">
                             </td>
     
-                            <%-- Get the valid_until --%>
-                            <td>
-                                <input value="<%= rs.getString("valid_until") %>"
-                                    name="valid_until" size="15">
-                            </td>    
+                            <%-- Get the rdate --%>
+                            <%-- Get the LASTNAME --%>    
 			   			       
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="course_number.jsp" method="get">
+                        <form action="department.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("course_id") %>" name="course_id">
+                                value="<%= rs.getString("department_id") %>" name="department_id">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
@@ -195,7 +195,9 @@
                 }
             %>
                 </table>
-            
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>
