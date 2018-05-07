@@ -123,7 +123,7 @@
                             <th><input value="" name="student" size="10"></th>
                             <th><input value="" name="ins" size="30"></th>
                             <th><input value="" name="de" size="15"></th>
-                            <th><input value="" name="ma" size="30"></th>
+                            <th><input value="" name="ma" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -162,7 +162,7 @@
                             <%-- Get the LASTNAME --%>
                             <td>
                                 <input value="<%= rs.getString("major") %>" 
-                                    name="ma" size="30">
+                                    name="ma" size="15">
                             </td>
     
     
