@@ -122,7 +122,7 @@
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="student" size="10"></th>
                             <th><input value="" name="college" size="15"></th>
-                            <th><input value="" name="major" size="15"></th>
+                            <th><input value="" name="major" size="25"></th>
                             <th><input value="" name="minor" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
@@ -156,7 +156,7 @@
                             <%-- Get the min_units --%>
                             <td>
                                 <input value="<%= rs.getString("major") %>"
-                                    name="major" size="15">
+                                    name="major" size="25">
                             </td>
     
                             <%-- Get the LASTNAME --%>

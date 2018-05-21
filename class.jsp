@@ -39,9 +39,11 @@
 
                         pstmt.setString(1, request.getParameter("class_id"));
                         pstmt.setString(2, (request.getParameter("title")));
-                        pstmt.setInt(3, Integer.parseInt(request.getParameter("year")));
-                        pstmt.setString(4, request.getParameter("quarter"));
-                        pstmt.setString(5, request.getParameter("course_id"));
+                        
+                        pstmt.setString(4, request.getParameter("cur"));
+                        
+                        pstmt.setString(5, request.getParameter("nxt"));
+                        pstmt.setString(3, request.getParameter("course_id"));
 
 
 
@@ -64,13 +66,15 @@
                         // Create the prepared statement and use it to
                         // UPDATE the Class  attributes in the Class  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE Class SET title = ?, year = ?, " +
-                            "quarter = ?, course_id = ? WHERE class_id = ?");
+                            "UPDATE Class SET title = ?,currently_offered = ?, next_offered = ? , course_id = ?" +
+                            "WHERE class_id = ?");
 
 
                         pstmt.setString(1, request.getParameter("title"));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("year")));
-                        pstmt.setString(3, request.getParameter("quarter"));
+                        
+                        pstmt.setString(2, request.getParameter("cur"));
+
+                        pstmt.setString(3, request.getParameter("nxt"));
 
                         pstmt.setString(4, request.getParameter("course_id"));
 
@@ -123,10 +127,9 @@
                         <h4> Classes</h4>
                         <th>class_id</th>
                         <th>title</th>
-                       <th> year</th>
-                       <th>quarter</th>
-
                        <th>course_id</th>
+                       <th>currently_offered</th>
+                       <th>next_offered</th>
 
                         <th>Action</th>
                     </tr>
@@ -134,10 +137,11 @@
                         <form action="class.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="class_id" size="10"></th>
-                            <th><input value="" name="title" size="10"></th>
-                            <th><input value="" name="year" size="15"></th>
-						    <th><input value="" name="quarter" size="15"></th>
+                            <th><input value="" name="title" size="50"></th>
+                            
 						    <th><input value="" name="course_id" size="15"></th>
+                            <th><input value="" name="cur" size="15"></th>
+                            <th><input value="" name="nxt" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -167,24 +171,19 @@
                                     name="title" size="50">
                             </td>
     
-                            <%-- Get the year --%>
-                            <td>
-                                <input value="<%= rs.getString("year") %>"
-                                    name="year" size="15">
-                            </td>
-    
-                            <%-- Get the LASTNAME --%>
-                            <td>
-                                <input value="<%= rs.getString("quarter") %>" 
-                                    name="quarter" size="15">
-                            </td>
-    
-
-
-<%-- Get the LASTNAME --%>
+                            
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
                                     name="course_id" size="15">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("currently_offered") %>" 
+                                    name="cur" size="15">
+                            </td>
+                            <td>
+                                <input value="<%= rs.getString("next_offered") %>" 
+                                    name="nxt" size="15">
                             </td>
     
 			   			       
@@ -224,6 +223,12 @@
                 }
             %>
                 </table>
+            </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="past_quarters.jsp" />
             </td>
         </tr>
         <tr>

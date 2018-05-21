@@ -28,19 +28,18 @@
                         // Create the prepared statement and use it to
                         // INSERT the course_categories  attributes INTO the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO course_categories VALUES (?, ?, ?, ?)");
+                            "INSERT INTO past_quarters VALUES ( ?, ?)");
 
-                        pstmt.setString(1, request.getParameter("degree_id"));
-                        pstmt.setString(2, (request.getParameter("course_category")));
-                        pstmt.setInt(3, Integer.parseInt(request.getParameter("min_units")));
-                        pstmt.setString(4, request.getParameter("min_avg_grade"));
+                        pstmt.setString(1, request.getParameter("clas"));
+                        
+                        pstmt.setString(2, request.getParameter("past"));
  
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                         conn.commit();
                         conn.setAutoCommit(true);
-                        response.sendRedirect("degree_requirements.jsp");
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -55,21 +54,21 @@
                         // Create the prepared statement and use it to
                         // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_categories SET course_category = ?, min_units = ?, " +
-                            "min_avg_grade = ? WHERE degree_id = ?");
+                            "UPDATE past_quarters SET past_quarter =  ? " +
+                            "WHERE class_id = ? and past_quarter = ? ");
 
-                        pstmt.setString(1, request.getParameter("course_category"));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("min_units")));
-                        pstmt.setString(3, request.getParameter("min_avg_grade"));
+                        pstmt.setString(1, request.getParameter("past"));
+                        
+                        pstmt.setString(2, request.getParameter("clas"));
+                        pstmt.setString(3, request.getParameter("old_past"));
 
-                        pstmt.setString(4, request.getParameter("degree_id"));
 
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-                        response.sendRedirect("degree_requirements.jsp");
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -83,15 +82,16 @@
                         
                         // Create the prepared statement and use it to
                         // DELETE the course_categories  FROM the course_categories  table.
-                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM course_categories WHERE degree_id = ?");
+                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM past_quarters WHERE class_id = ? and past_quarter = ?");
 
-                        pstmt.setString(1, request.getParameter("degree_id"));
+                        pstmt.setString(1, request.getParameter("clas"));
+                        pstmt.setString(2, request.getParameter("past"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
                          conn.commit();
                         conn.setAutoCommit(true);
-                        response.sendRedirect("degree_requirements.jsp");
+                        response.sendRedirect("class.jsp");
                     }
             %>
 
@@ -103,29 +103,26 @@
                     // Use the created statement to SELECT
                     // the course_categories  attributes FROM the course_categories  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM course_categories ");
+                        ("SELECT * FROM past_quarters ");
             %>
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <h4 >graduation course category requirements</h4>
+                        <h4 >Past quarters</h4>
                 
-                        <th>degree_id</th>
-                        <th>course_category</th>
-                       <th> min_units</th>
-                       <th>min_avg_grade</th>
+                        <th>class_id</th>
+                        
+                       <th>past_quarter</th>
 
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="course_categories.jsp" method="get">
+                        <form action="past_quarters.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="degree_id" size="10"></th>
-                            <th><input value="" name="course_category" size="35"></th>
-                            <th><input value="" name="min_units" size="15"></th>
-                            <th><input value="" name="min_avg_grade" size="15"></th>
-
+                            <th><input value="" name="clas" size="10"></th>
+                            <th><input value="" name="past" size="15"></th>
+                            
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -139,44 +136,36 @@
             %>
 
                     <tr>
-                        <form action="course_categories.jsp" method="get">
+                        <form action="past_quarters.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
                             <%-- Get the degree_id, which is a number --%>
                             <td>
-                                <input value="<%= rs.getString("degree_id") %>" 
-                                    name="degree_id" size="10" readonly="true">
+                                <input value="<%= rs.getString("class_id") %>" 
+                                    name="clas" size="10" readonly="true">
                             </td>
     
                             <%-- Get the course_category --%>
                             <td>
-                                <input value="<%= rs.getString("course_category") %>" 
-                                    name="course_category" size="35">
+                                <input value="<%= rs.getString("past_quarter") %>" 
+                                    name="past" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("past_quarter") %>" name="old_past">
     
-                            <%-- Get the min_units --%>
-                            <td>
-                                <input value="<%= rs.getString("min_units") %>"
-                                    name="min_units" size="15">
-                            </td>
-    
-                            <%-- Get the LASTNAME --%>
-                            <td>
-                                <input value="<%= rs.getString("min_avg_grade") %>" 
-                                    name="min_avg_grade" size="15">
-                            </td>
-    
-    
-                               
+                            
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="course_categories.jsp" method="get">
+                        <form action="past_quarters.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("degree_id") %>" name="degree_id">
+                                value="<%= rs.getString("class_id") %>" name="clas">
+                             <input type="hidden" 
+                                value="<%= rs.getString("past_quarter") %>" name="past">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

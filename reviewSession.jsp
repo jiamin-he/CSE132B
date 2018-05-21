@@ -62,7 +62,7 @@
                         // UPDATE the review_session  attributes in the review_session  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE review_session SET rtime = ?, rdate = ?, " +
-                            "rlocation = ? WHERE class_id = ?");
+                            "rlocation = ? WHERE class_id = ? and rtime=? and rdate = ? and rlocation = ?");
 
 
                         pstmt.setString(1, request.getParameter("rtime"));
@@ -70,6 +70,10 @@
                         pstmt.setString(3, request.getParameter("rlocation"));
 
                         pstmt.setString(4, request.getParameter("class_id"));
+
+                        pstmt.setString(5, request.getParameter("old_rtime"));
+                        pstmt.setString(6, (request.getParameter("old_rdate")));
+                        pstmt.setString(7, request.getParameter("old_rlocation"));
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -90,7 +94,7 @@
                         // Create the prepared statement and use it to
                         // DELETE the review_session  FROM the review_session  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM review_session  WHERE class_id = ?");
+                            "DELETE FROM review_session  WHERE class_id = ? and rtime =? and rlocation = ? and rdate = ?");
 
                         pstmt.setString(1, request.getParameter("class_id"));
                         int rowCount = pstmt.executeUpdate();
@@ -170,6 +174,13 @@
                                 <input value="<%= rs.getString("rlocation") %>" 
                                     name="rlocation" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("rtime") %>" name="old_rtime">
+                                <input type="hidden" 
+                                value="<%= rs.getString("rdate") %>" name="old_rdate">
+                                <input type="hidden" 
+                                value="<%= rs.getString("rlocation") %>" name="old_rlocation">
     
 			   			       
                             <%-- Button --%>
@@ -181,6 +192,12 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("class_id") %>" name="class_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("rtime") %>" name="rtime">
+                                <input type="hidden" 
+                                value="<%= rs.getString("rdate") %>" name="rdate">
+                                <input type="hidden" 
+                                value="<%= rs.getString("rlocation") %>" name="rlocation">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

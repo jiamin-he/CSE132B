@@ -28,10 +28,10 @@
                         // Create the prepared statement and use it to
                         // INSERT the faculty_teach  attributes INTO the faculty_teach  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO faculty_teach VALUES (?, ?, ?, ?)");
+                            "INSERT INTO faculty_teach VALUES (?,?, ?, ?)");
 
                         pstmt.setString(1, request.getParameter("faculty_id"));
-                        pstmt.setString(2, (request.getParameter("faculty_name")));
+                        pstmt.setString(2, (request.getParameter("course_id")));
                         pstmt.setString(3, (request.getParameter("section_id")));
                         pstmt.setString(4, request.getParameter("teach_time"));
                         
@@ -56,15 +56,20 @@
                         // Create the prepared statement and use it to
                         // UPDATE the faculty_teach  attributes in the faculty_teach  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE faculty_teach SET faculty_name = ?, section_id = ?, " +
-                            "teach_time = ? WHERE faculty_id = ?");
+                            "UPDATE faculty_teach SET  section_id = ?, course_id = ? " +
+                            "teach_time = ? WHERE faculty_id = ? and course_id = ? and section_id = ? and teach_time = ?");
 
 
-                        pstmt.setString(1, request.getParameter("faculty_name"));
-                        pstmt.setString(2, (request.getParameter("section_id")));
+                        
+                        pstmt.setString(1, (request.getParameter("section_id")));
+                        pstmt.setString(2, (request.getParameter("course_id")));
                         pstmt.setString(3, request.getParameter("teach_time"));
 
                         pstmt.setString(4, request.getParameter("faculty_id"));
+                        pstmt.setString(5, request.getParameter("old_course_id"));
+                        pstmt.setString(6, request.getParameter("old_section_id"));
+                        pstmt.setString(7, request.getParameter("old_teach_time"));
+
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -87,9 +92,12 @@
                         // Create the prepared statement and use it to
                         // DELETE the faculty_teach  FROM the faculty_teach  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM faculty_teach  WHERE faculty_id = ?");
+                            "DELETE FROM faculty_teach  WHERE faculty_id = ? and course_id = ? and section_id = ? and teach_time = ?");
 
                         pstmt.setString(1, request.getParameter("faculty_id"));
+                        pstmt.setString(2, request.getParameter("course_id"));
+                        pstmt.setString(3, request.getParameter("section_id"));
+                        pstmt.setString(4, request.getParameter("teach_time"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -116,7 +124,7 @@
                     <tr>
                         <h4> faculty teaching sections:</h4>
                         <th>faculty_id</th>
-                        <th>faculty_name</th>
+                        <th>course_id</th>
                        <th> section_id</th>
                        <th>teach_time</th>
 
@@ -126,7 +134,7 @@
                         <form action="faculty_teach.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="faculty_id" size="10"></th>
-                            <th><input value="" name="faculty_name" size="15"></th>
+                            <th><input value="" name="course_id" size="10"></th>
                             <th><input value="" name="section_id" size="15"></th>
 						    <th><input value="" name="teach_time" size="15"></th>
 
@@ -149,14 +157,15 @@
                             <%-- Get the faculty_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("faculty_id") %>" 
+                                    name="faculty_id" size="10" readonly = "true">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("course_id") %>" 
                                     name="faculty_id" size="10">
                             </td>
     
-                            <%-- Get the faculty_name --%>
-                            <td>
-                                <input value="<%= rs.getString("faculty_name") %>" 
-                                    name="faculty_name" size="15">
-                            </td>
+                            
     
                             <%-- Get the section_id --%>
                             <td>
@@ -169,6 +178,13 @@
                                 <input value="<%= rs.getString("teach_time") %>" 
                                     name="teach_time" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("course_id") %>" name="old_course_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("section_id") %>" name="old_section_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("teach_time") %>" name="old_teach_time">
     
 			   			       
                             <%-- Button --%>
@@ -180,6 +196,12 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("faculty_id") %>" name="faculty_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("course_id") %>" name="course_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("section_id") %>" name="section_id">
+                                <input type="hidden" 
+                                value="<%= rs.getString("teach_time") %>" name="teach_time">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

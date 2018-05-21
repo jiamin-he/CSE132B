@@ -121,7 +121,7 @@
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <h4> Lectures, Discussions, etc. for Sections</h4>
+                        <h4> Lectures, Discussions, etc. for Sections (one hour)</h4>
                         <th>section_id</th>
                         <th>category</th>
                        <th> isweekly</th>

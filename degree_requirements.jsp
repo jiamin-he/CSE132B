@@ -218,6 +218,15 @@
             <td>
                 <jsp:include page="course_categories.jsp" />
             </td>
+            
+        </tr>
+        <tr>
+            <td> </td>
+            <td>
+                <jsp:include page="concentration.jsp" />
+                
+
+            </td>
             <td>
                 <jsp:include page="ms_concentrate.jsp" />
             </td>

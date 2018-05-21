@@ -84,9 +84,10 @@
                         // Create the prepared statement and use it to
                         // DELETE the course_number  FROM the course_number  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course_number  WHERE course_id = ?");
+                            "DELETE FROM course_number  WHERE course_id = ? and course_number = ?");
 
                         pstmt.setString(1, request.getParameter("course_id"));
+                        pstmt.setString(2, request.getParameter("course_number"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -170,6 +171,8 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("course_id") %>" name="course_id">
+                            <input type="hidden" 
+                                value="<%= rs.getString("course_number") %>" name="course_number">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
