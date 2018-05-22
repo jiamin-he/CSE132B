@@ -66,7 +66,7 @@
                             <%=result_2.getString("noEnd")%>
                         </td>
                         <td>
-                            <%=result_2.getInt("noDay")%>
+                            <%=result_2.getString("noDay")%>
                         </td>
                         <td>
                             <%=result_2.getString("conflictingClassTitles")%>
@@ -115,9 +115,10 @@
                 result.close();
                 statement.close();
                 connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            } 
+            //catch (SQLException e) {
+            //    throw new RuntimeException(e);
+            //}
             finally {
                 if (result != null) {
                     try {
