@@ -66,7 +66,7 @@
 
                             //
                             PreparedStatement pstmt = conn.prepareStatement(
-                                "INSERT INTO course_enrollment VALUES (?, ?, ?, ?,?)");
+                                "INSERT INTO course_enrollment VALUES (?, ?, ?, ?,?,?)");
 
                             
                             
@@ -75,6 +75,7 @@
                             pstmt.setString(3, request.getParameter("section"));
                             pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
                             pstmt.setString(5, request.getParameter("grading"));
+                            pstmt.setString(6, new String("sp2018"));
                             
                             int rowCount = pstmt.executeUpdate();
 
@@ -98,16 +99,17 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course_enrollment SET course_id = ?, units = ?, section_id = ? grading_option = ?" +
+                            "UPDATE course_enrollment SET course_id = ?, units = ?, section_id = ?, quarter = ?, grading_option = ?" +
                             "WHERE student_id = ? and section_id = ? ");
 
                         pstmt.setString(1, request.getParameter("course"));
                         pstmt.setInt(
                             2, Integer.parseInt(request.getParameter("units")));
                         pstmt.setString(3, request.getParameter("section"));
-                        pstmt.setString(4, request.getParameter("grading"));
-                        pstmt.setString(5, request.getParameter("student"));
-                        pstmt.setString(6, request.getParameter("oldSection"));
+                        pstmt.setString(4, "quarter");
+                        pstmt.setString(5, request.getParameter("grading"));
+                        pstmt.setString(6, request.getParameter("student"));
+                        pstmt.setString(7, request.getParameter("oldSection"));
                         
                         int rowCount = pstmt.executeUpdate();
                         // Commit transaction
@@ -159,6 +161,7 @@
                         <th>sectionID</th>
 			            <th>units</th>
                         <th>grading_option</th>
+                        <th>quarter</th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -169,6 +172,7 @@
                             <th><input value="" name="section" size="15"></th>
 			    <th><input value="" name="units" size="15"></th>
                 <th><input value="" name="grading" size="15"></th>
+                <th><input value="" name="quarter" size="15"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -212,6 +216,11 @@
                             <td>
                                 <input value="<%= rs.getString("grading_option") %>" 
                                     name="grading" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("quarter") %>" 
+                                    name="quarter" size="10">
                             </td>
 
                             <input type="hidden" 

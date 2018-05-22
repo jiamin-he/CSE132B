@@ -56,13 +56,14 @@
                         // UPDATE the course_categories  attributes in the course_categories  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE course_categories SET course_category = ?, min_units = ?, " +
-                            "min_avg_grade = ? WHERE degree_id = ?");
+                            "min_avg_grade = ? WHERE degree_id = ? and course_category = ?");
 
                         pstmt.setString(1, request.getParameter("course_category"));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("min_units")));
                         pstmt.setString(3, request.getParameter("min_avg_grade"));
 
                         pstmt.setString(4, request.getParameter("degree_id"));
+                        pstmt.setString(5, request.getParameter("old_course_category"));
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -165,6 +166,9 @@
                                 <input value="<%= rs.getString("min_avg_grade") %>" 
                                     name="min_avg_grade" size="15">
                             </td>
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("course_category") %>" name="old_course_category">
     
     
                                

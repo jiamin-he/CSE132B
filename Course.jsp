@@ -235,7 +235,8 @@
         <tr>
             <td> </td>
                <td>
-                        <jsp:include page="course_prerequisites.jsp" />
+                        <jsp:include page="course_units.jsp" />
+
                </td>
                    
                 <td>
@@ -246,7 +247,7 @@
         <tr>
             <td> </td>
                 <td>
-                    <jsp:include page="course_units.jsp" />
+                    <jsp:include page="course_prerequisites.jsp" />
                     
                 </td>
 
@@ -254,6 +255,16 @@
                     <jsp:include page="course_number.jsp" />
                 </td>
 
+           
+        </tr>
+        <tr>
+            <td> </td>
+                <td>
+                    <jsp:include page="course_category_conversion.jsp" />
+                    
+                </td>
+
+                
            
         </tr>
     </table>

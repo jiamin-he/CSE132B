@@ -28,7 +28,7 @@
                         // Create the prepared statement and use it to
                         // INSERT the meeting  attributes INTO the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO meeting VALUES (?, ?, ?, ?, ?, ?)");
+                            "INSERT INTO meeting VALUES (?, ?, ?, ?, ?, ?,?)");
 
                         pstmt.setString(1, request.getParameter("section_id"));
                         pstmt.setString(2, (request.getParameter("category")));
@@ -38,6 +38,7 @@
 
 
                         pstmt.setString(6, request.getParameter("mlocation"));
+                        pstmt.setString(7, request.getParameter("mtime2"));
 
 
 
@@ -64,14 +65,16 @@
                         // UPDATE the meeting  attributes in the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE meeting SET category = ?, isweekly = ?, " + 
-                            "mtime = ?, mdate = ?, mlocation = ? WHERE section_id = ?");
+                            "starttime = ?, mdate = ?, mlocation = ?, endtime = ? WHERE section_id = ? and  category = ? ");
 
                         pstmt.setString(1, request.getParameter("category"));
                         pstmt.setBoolean(2,  Boolean.parseBoolean(request.getParameter("isweekly")));
                         pstmt.setString(3, request.getParameter("mtime"));
                         pstmt.setString(4, request.getParameter("mdate"));
                         pstmt.setString(5, request.getParameter("mlocation"));
-                        pstmt.setString(6, request.getParameter("section_id"));
+                        pstmt.setString(6, request.getParameter("mtime2"));
+                        pstmt.setString(7, request.getParameter("section_id"));
+                        pstmt.setString(8, request.getParameter("old_category"));
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -94,9 +97,10 @@
                         // Create the prepared statement and use it to
                         // DELETE the meeting  FROM the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM meeting  WHERE section_id = ?");
+                            "DELETE FROM meeting  WHERE section_id = ? and category = ? ");
 
                         pstmt.setString(1, request.getParameter("section_id"));
+                        pstmt.setString(2, request.getParameter("category"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -125,9 +129,10 @@
                         <th>section_id</th>
                         <th>category</th>
                        <th> isweekly</th>
-                       <th>mtime</th>
+                       <th>start time</th>
                        <th>mdate</th>
                        <th>mlocation</th>
+                       <th>end time</th>
 
                         <th>Action</th>
                     </tr>
@@ -140,6 +145,7 @@
 						    <th><input value="" name="mtime" size="15"></th>
 						    <th><input value="" name="mdate" size="15"></th>
 						    <th><input value="" name="mlocation" size="15"></th>
+                            <th><input value="" name="mtime2" size="15"></th>
 
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -177,7 +183,7 @@
     
                             <%-- Get the LASTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("mtime") %>" 
+                                <input value="<%= rs.getString("starttime") %>" 
                                     name="mtime" size="15">
                             </td>
     
@@ -192,7 +198,15 @@
                             <td>
                                 <input value="<%= rs.getString("mlocation") %>" 
                                     name="mlocation" size="15">
-                            </td>                           
+                            </td> 
+
+                            <td>
+                                <input value="<%= rs.getString("endtime") %>" 
+                                    name="mtime2" size="15">
+                            </td>  
+
+                            <input type="hidden" 
+                                value="<%= rs.getString("category") %>" name="old_category">                         
 
                             <%-- Button --%>
                             <td>
@@ -203,6 +217,8 @@
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
                                 value="<%= rs.getString("section_id") %>" name="section_id">
+                            <input type="hidden" 
+                                value="<%= rs.getString("category") %>" name="category">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
