@@ -160,7 +160,7 @@
     
                             <%-- Get the FIRSTNAME --%>
                             <td>
-                                <input value="<%= rs.getString("faculty_name") %>"
+                                <input value="<%= rs.getString("fname") %>"
                                     name="name" size="15">
                             </td>
     
