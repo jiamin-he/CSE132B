@@ -209,7 +209,7 @@
 
             <%
                 Statement statement = connection.createStatement();
-                result = statement.executeQuery("SELECT stu.firstname AS first, stu.middlename AS middle, stu.lastname AS last, stu.ssn AS ssn FROM student stu, course_enrollment se WHERE stu.student_id = se.student_id order by stu.ssn");
+                result = statement.executeQuery("SELECT distinct stu.firstname AS first, stu.middlename AS middle, stu.lastname AS last, stu.ssn AS ssn FROM student stu, course_enrollment se WHERE stu.student_id = se.student_id order by stu.ssn");
             
             %>
             <hr>
