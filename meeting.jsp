@@ -28,7 +28,7 @@
                         // Create the prepared statement and use it to
                         // INSERT the meeting  attributes INTO the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO meeting VALUES (?, ?, ?, ?, ?, ?,?)");
+                            "INSERT INTO meeting VALUES (?, ?, ?, ?, ?, ?,?,?)");
 
                         pstmt.setString(1, request.getParameter("section_id"));
                         pstmt.setString(2, (request.getParameter("category")));
@@ -39,6 +39,7 @@
 
                         pstmt.setString(6, request.getParameter("mlocation"));
                         pstmt.setString(7, request.getParameter("mtime2"));
+                        pstmt.setString(8, request.getParameter("meeting_id"));
 
 
 
@@ -65,7 +66,7 @@
                         // UPDATE the meeting  attributes in the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE meeting SET category = ?, isweekly = ?, " + 
-                            "starttime = ?, mdate = ?, mlocation = ?, endtime = ? WHERE section_id = ? and  category = ? ");
+                            "starttime = ?, mdate = ?, mlocation = ?, endtime = ?, meeting_id = ? WHERE section_id = ? and  category = ? ");
 
                         pstmt.setString(1, request.getParameter("category"));
                         pstmt.setBoolean(2,  Boolean.parseBoolean(request.getParameter("isweekly")));
@@ -73,8 +74,9 @@
                         pstmt.setString(4, request.getParameter("mdate"));
                         pstmt.setString(5, request.getParameter("mlocation"));
                         pstmt.setString(6, request.getParameter("mtime2"));
-                        pstmt.setString(7, request.getParameter("section_id"));
-                        pstmt.setString(8, request.getParameter("old_category"));
+                        pstmt.setString(7, request.getParameter("meeting_id"));
+                        pstmt.setString(8, request.getParameter("section_id"));
+                        pstmt.setString(9, request.getParameter("old_category"));
 
                         int rowCount = pstmt.executeUpdate();
 
@@ -126,6 +128,7 @@
                 <table border="1">
                     <tr>
                         <h4> Lectures, Discussions, etc. for Sections (one hour)</h4>
+                        <th>meeting_id</th>
                         <th>section_id</th>
                         <th>category</th>
                        <th> isweekly</th>
@@ -139,6 +142,7 @@
                     <tr>
                         <form action="meeting.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
+                            <th><input value="" name="meeting_id" size="10"></th>
                             <th><input value="" name="section_id" size="10"></th>
                             <th><input value="" name="category" size="10"></th>
                             <th><input value="" name="isweekly" size="15"></th>
@@ -164,6 +168,11 @@
                             <input type="hidden" value="update" name="action">
 
                             <%-- Get the section_id, which is a number --%>
+                            <td>
+                                <input value="<%= rs.getString("meeting_id") %>" 
+                                    name="meeting_id" size="10" >
+                            </td>
+
                             <td>
                                 <input value="<%= rs.getString("section_id") %>" 
                                     name="section_id" size="10" readonly="true">

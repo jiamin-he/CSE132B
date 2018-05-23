@@ -230,6 +230,9 @@
             <td>
                 <jsp:include page="past_quarters.jsp" />
             </td>
+            <td>
+                <jsp:include page="meeting_dow.jsp" />
+            </td>
         </tr>
         <tr>
             <td> </td>

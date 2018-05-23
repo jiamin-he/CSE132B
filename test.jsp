@@ -34,10 +34,9 @@
                     // prepare statement
                     prepare_statement = connection.prepareStatement(" select distinct md.dow, dc.day, me.starttime, me.endtime, me.category, me.section_id, cc.course_number, s.ssn, s.firstname, s.lastname     from course_enrollment as ce, course_enrollment as ce2, meeting as me,          meeting_dow as md, dow_conversion as dc, course as cc, student as s     where ce.section_id = ?             and ce.student_id = ce2.student_id             and ce2.section_id = me.section_id             and me.meeting_id = md.meeting_id             and cc.course_id = ce2.course_id             and md.dow = dc.id             and s.student_id = ce.student_id     order by md.dow, me.starttime, me.endtime");
 
-                    prepare_statement.setString(1, request.getParameter("showAllSections"));
-                    result_2 = prepare_statement.executeQuery();
+                    prepare_statement.setString(1, request.getParameter("showAllsections"));
 
-                    prepare_statement = connection.prepareStatement(" with avail as (     SELECT ava::date as cdate,      ava.time AS stime,      (ava.time + interval '1 hour') AS etime FROM      generate_series(?::timestamp, ?::timestamp, '1 hour') ava )      , covered as (     select distinct md.dow, me.starttime, me.endtime     from course_enrollment as ce, course_enrollment as ce2, meeting as me, meeting_dow as md     where ce.section_id = ?             and ce.student_id = ce2.student_id             and ce2.section_id = me.section_id             and me.meeting_id = md.meeting_id     order by md.dow, me.starttime, me.endtime )      select avail.cdate, dc.day, avail.stime, avail.etime from avail,dow_conversion as dc  where not exists (     select *      from covered     where (covered.dow = extract(dow from avail.cdate)     and CAST(avail.stime AS Time) < CAST(covered.endTime AS Time)       AND CAST(avail.etime AS Time) > CAST(covered.startTime AS Time))     or extract(dow from avail.cdate) = 6      or extract(dow from avail.cdate) = 0     or (CAST(avail.stime AS Time) < '8:00:00')     or (CAST(avail.stime AS Time) > '19:00:00')     or (avail.cdate < '03-01-2018')     or (avail.cdate > '06-01-2018') ) and extract(dow from avail.cdate) = dc.id order by avail.cdate, avail.stime, avail.etime");
+                    prepare_statement = connection.prepareStatement(" with avail as (     SELECT ava::date as cdate,      ava.time AS stime,      (ava.time + interval '1 hour') AS etime FROM      generate_series(?::timestamp, ?::timestamp, '1 hour') ava )      , covered as (     select distinct md.dow, me.starttime, me.endtime     from course_enrollment as ce, course_enrollment as ce2, meeting as me, meeting_dow as md     where ce.section_id = ?             and ce.student_id = ce2.student_id             and ce2.section_id = me.section_id             and me.meeting_id = md.meeting_id     order by md.dow, me.starttime, me.endtime )      select avail.cdate, avail.stime, avail.etime from avail  where not exists (     select *      from covered     where (covered.dow = extract(dow from avail.cdate)     and CAST(avail.stime AS Time) < CAST(covered.endTime AS Time)       AND CAST(avail.etime AS Time) > CAST(covered.startTime AS Time))     or extract(dow from avail.cdate) = 6      or extract(dow from avail.cdate) = 0     or (CAST(avail.stime AS Time) < '8:00:00')     or (CAST(avail.stime AS Time) > '19:00:00')     or (avail.cdate < '03-01-2018')     or (avail.cdate > '06-01-2018') ) order by avail.cdate, avail.stime, avail.etime");
 
 
 
@@ -55,27 +54,15 @@
                     <h4> Students' schedules for other sections (they are taking this section)</h4>
                     <table border="1">
                     <tr>
-                    <th>Day</th>
-                    <th>Start Time </th>
-                    <th>End Time </th>
-                    <th>category</th>
-                    <th>section id</th>
-                    <th>course number</th>
-                    <th>ssn</th>
-                    <th>first name</th>
-                    <th>last name</th>
+                    <th>All The Available Dates </th>
+                    <th>The Starting Time </th>
+                    <th>The Ending Time </th>
                     </tr>
-
-
-
-                     <%
-
+                    <%
                         while (result_2.next()) {
                     %>
-
                     <tr>
                         <td>
-
                             <%=result_2.getString("day")%>
                         </td>
                         <td>
@@ -114,7 +101,6 @@
                     <table border="1">
                     <tr>
                     <th>All The Available Dates </th>
-                    <th>Day of week</th>
                     <th>The Starting Time </th>
                     <th>The Ending Time </th>
                     </tr>
@@ -124,9 +110,6 @@
                     <tr>
                         <td>
                             <%=result_3.getString("cdate")%>
-                        </td>
-                        <td>
-                            <%=result_3.getString("day")%>
                         </td>
                         <td>
                             <%=result_3.getString("stime")%>
@@ -177,8 +160,8 @@
                 result.close();
                 statement.close();
                 connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            //} catch (SQLException e) {
+            //    throw new RuntimeException(e);
             }
 
             finally {
