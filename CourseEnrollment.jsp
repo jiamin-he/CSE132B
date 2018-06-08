@@ -149,7 +149,7 @@
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM course_enrollment order by student_id");
+                        ("select * from course_enrollment as ce, course as cn where ce.course_id = cn.course_id order by student_id");
             %>
 
             <!-- Add an HTML table header row to format the results -->
@@ -157,6 +157,7 @@
                     <tr>
                         <h4>Course Enrollment</h4>
                         <th>studentID</th>
+                        <th>courseNumber</th>
                         <th>courseID</th>
                         <th>sectionID</th>
 			            <th>units</th>
@@ -168,6 +169,7 @@
                         <form action="CourseEnrollment.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="student" size="10"></th>
+                            <th><input value="" name="course_number" size="10"></th>
                             <th><input value="" name="course" size="10"></th>
                             <th><input value="" name="section" size="15"></th>
 			    <th><input value="" name="units" size="15"></th>
@@ -193,6 +195,11 @@
                             <td>
                                 <input value="<%= rs.getString("student_id") %>" 
                                     name="student" size="15" readonly="true">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("course_number") %>"
+                                    name="course_number" size="15">
                             </td>
 
                             <%-- Get the FIRSTNAME --%>
