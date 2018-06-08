@@ -54,7 +54,7 @@
                         
                         // Create the prepared statement and use it to
                         // DELETE the course_categories  FROM the course_categories  table.
-                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM meeting_dow WHERE section_id = ? and dow = ?");
+                        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM meeting_dow WHERE meeting_id = ? and dow = ?");
 
                         pstmt.setString(1, request.getParameter("meeting_id"));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("dow")));
@@ -75,7 +75,7 @@
                     // Use the created statement to SELECT
                     // the course_categories  attributes FROM the course_categories  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM meeting_dow ");
+                        ("SELECT * FROM meeting_dow order by meeting_id");
             %>
 
             <!-- Add an HTML table header row to format the results -->

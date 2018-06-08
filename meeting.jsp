@@ -66,7 +66,7 @@
                         // UPDATE the meeting  attributes in the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE meeting SET category = ?, isweekly = ?, " + 
-                            "starttime = ?, mdate = ?, mlocation = ?, endtime = ?, meeting_id = ? WHERE section_id = ? and  category = ? ");
+                            "starttime = ?, mdate = ?, mlocation = ?, endtime = ?,section_id = ? WHERE meeting_id = ? ");
 
                         pstmt.setString(1, request.getParameter("category"));
                         pstmt.setBoolean(2,  Boolean.parseBoolean(request.getParameter("isweekly")));
@@ -74,10 +74,9 @@
                         pstmt.setString(4, request.getParameter("mdate"));
                         pstmt.setString(5, request.getParameter("mlocation"));
                         pstmt.setString(6, request.getParameter("mtime2"));
-                        pstmt.setString(7, request.getParameter("meeting_id"));
-                        pstmt.setString(8, request.getParameter("section_id"));
-                        pstmt.setString(9, request.getParameter("old_category"));
-
+                        pstmt.setString(8, request.getParameter("meeting_id"));
+                        pstmt.setString(7, request.getParameter("section_id"));
+                        
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -121,7 +120,7 @@
                     // Use the created statement to SELECT
                     // the meeting  attributes FROM the meeting  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM meeting ");
+                        ("SELECT * FROM meeting order by meeting_id");
             %>
 
             <!-- Add an HTML table header row to format the results -->
@@ -170,12 +169,12 @@
                             <%-- Get the section_id, which is a number --%>
                             <td>
                                 <input value="<%= rs.getString("meeting_id") %>" 
-                                    name="meeting_id" size="10" >
+                                    name="meeting_id" size="10" readonly="true">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("section_id") %>" 
-                                    name="section_id" size="10" readonly="true">
+                                    name="section_id" size="10" >
                             </td>
     
                             <%-- Get the category --%>
