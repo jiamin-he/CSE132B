@@ -78,6 +78,7 @@
                         pstmt.setString(7, request.getParameter("section_id"));
                         
                         int rowCount = pstmt.executeUpdate();
+                        out.println(rowCount);
 
                         // Commit transaction
                          conn.commit();
@@ -247,8 +248,23 @@
                     conn.close();
                 } catch (SQLException sqle) {
                     out.println(sqle.getMessage());
+                    //out.println("<BR> click here to update ");
+            %>
+                    <br>
+                    <a href="class.jsp">Click here to update the meeting details</a>
+                    <!-- <br>
+                    <a href="faculty.jsp">Click here to update the faculty_teach details</a> -->
+
+            <%
+                    if(sqle.getMessage().contains("faculty")) {
+            %>
+                    <br>
+                    <a href="faculty.jsp">Click here to update the faculty_teach details</a>
+            <%
+                    }
                 } catch (Exception e) {
                     out.println(e.getMessage());
+                    
                 }
             %>
                 </table>

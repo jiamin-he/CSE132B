@@ -116,7 +116,7 @@
                     // Use the created statement to SELECT
                     // the faculty_teach  attributes FROM the faculty_teach  table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM faculty_teach ");
+                        ("SELECT * FROM faculty_teach order by faculty_id");
             %>
 
             <!-- Add an HTML table header row to format the results -->
