@@ -34,6 +34,7 @@
             ResultSet result_6 = null;
             ResultSet result_7 = null;
             ResultSet result_8 = null;
+            ResultSet result_9 = null;
 
             try {
                 Class.forName("org.postgresql.Driver");
@@ -463,6 +464,59 @@
                 </td>
                 <td>
                     <%=result_7.getString("other")%>
+                </td>
+
+                </tr> 
+
+                <%   
+                }
+                %>
+                </table>
+
+                <%
+                Statement statement3 = connection.createStatement();
+                
+                result_9 = statement3.executeQuery("select * from view_cpg order by course_id");
+            %>
+
+                <h4> CPG </h4>
+                <table border="1">
+                <tr>
+                <th>course number </th>
+                <th>professor </th>
+                
+                <th># of A </th>
+                <th># of B</th>
+                <th># of C</th>
+                <th># of D</th>
+                <th># of others</th>
+                </tr>
+                <%
+                while (result_9.next()) {
+                %>
+                <tr>
+
+                <td>
+                    <%=result_9.getString("course_number")%>
+                </td>
+                <td>
+                    <%=result_9.getString("fname")%>
+                </td>
+                
+                <td>
+                    <%=result_9.getString("a")%>
+                </td>
+                <td>
+                    <%=result_9.getString("b")%>
+                </td>
+                <td>
+                    <%=result_9.getString("c")%>
+                </td>
+                <td>
+                    <%=result_9.getString("d")%>
+                </td>
+                <td>
+                    <%=result_9.getString("other")%>
                 </td>
 
                 </tr> 

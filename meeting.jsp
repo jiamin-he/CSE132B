@@ -98,10 +98,9 @@
                         // Create the prepared statement and use it to
                         // DELETE the meeting  FROM the meeting  table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM meeting  WHERE section_id = ? and category = ? ");
+                            "DELETE FROM meeting  WHERE meeting_id =?");
 
-                        pstmt.setString(1, request.getParameter("section_id"));
-                        pstmt.setString(2, request.getParameter("category"));
+                        pstmt.setString(1, request.getParameter("meeting_id"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -224,9 +223,8 @@
                         <form action="meeting.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("section_id") %>" name="section_id">
-                            <input type="hidden" 
-                                value="<%= rs.getString("category") %>" name="category">
+                                value="<%= rs.getString("meeting_id") %>" name="meeting_id">
+                            
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
