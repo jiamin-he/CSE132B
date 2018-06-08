@@ -359,7 +359,7 @@
                             String cid = request.getParameter("course_id_selected");
                             if(cid != null ){
                         %>
-                            <form action="query3a1_decision.jsp" method="POST">
+                            <form action="view3a1_decision.jsp" method="POST">
                                 <input type="hidden" name="prof" value="prof"/>
 
                                 <select name="prof_selected">
