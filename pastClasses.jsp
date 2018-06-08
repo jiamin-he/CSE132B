@@ -70,7 +70,7 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE  classes_taken_in_the_past SET course_id = ?, grade = ?, grading_option = ? , quarter = ? units = ?" +
+                            "UPDATE  classes_taken_in_the_past SET course_id = ?, grade = ?, grading_option = ? , quarter = ?, units = ?" +
                             "WHERE student_id = ? and course_id = ? and quarter = ? ");
 
                         pstmt.setString(1, request.getParameter("course_id"));
@@ -122,7 +122,7 @@
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
                     ResultSet rs = statement.executeQuery
-                        ("SELECT * FROM classes_taken_in_the_past");
+                        ("SELECT * FROM classes_taken_in_the_past order by student_id");
             %>
 
             <!-- Add an HTML table header row to format the results -->

@@ -1,26 +1,8 @@
 
-
-
-
 <html>
 <body>
-<h2>3a i: given X, Y, Z, count of grades</h2>
-<table>
-    <!-- <tr>
-        <td> </td>
-            <td>
-                <jsp:include page="view3a1_decision_insert.jsp" />
-                
-            </td>
 
-            
-       
-    </tr> -->
-    <tr>
-        <td valign="top">
-            <jsp:include page="/menu.html" />
-        </td>
-        <td>
+
             <%@ page import="java.sql.*"%>
             
             <%
@@ -96,141 +78,9 @@
                     prepare_statement.setString(3, request.getParameter("quarter_selected"));
                     result_4 = prepare_statement.executeQuery();
 
-                    prepare_statement = connection.prepareStatement("select distinct c.course_id, c.course_number, ft.teach_time, f.fname, ctp.grade ,ctp.student_id from course as c, faculty_teach as ft, faculty as f, classes_taken_in_the_past as ctp where c.course_id = ft.course_id     and f.faculty_id = ft.faculty_id     and c.course_id = ?     and f.faculty_id = ?     and ft.teach_time = ?     and ctp.course_id = c.course_id     and ctp.quarter = ft.teach_time     and ctp.grading_option = 'Letter Grade' order by course_id");
-
-                    prepare_statement.setString(1, request.getParameter("course_id_selected"));
-                    prepare_statement.setString(2, request.getParameter("prof_selected"));
-                    prepare_statement.setString(3, request.getParameter("quarter_selected"));
-                    result_5 = prepare_statement.executeQuery();
-
-                    prepare_statement = connection.prepareStatement("select distinct c.course_id, c.course_number, ft.teach_time, f.fname, ctp.grade , count(ctp.student_id) from course as c, faculty_teach as ft, faculty as f, classes_taken_in_the_past as ctp where c.course_id = ft.course_id     and f.faculty_id = ft.faculty_id     and c.course_id = ?     and f.faculty_id = ?     and ft.teach_time = ?     and ctp.course_id = c.course_id     and ctp.quarter = ft.teach_time     and ctp.grading_option = 'Letter Grade' group by c.course_id, c.course_number, ft.teach_time, f.fname, ctp.grade  order by course_id");
-
-                    prepare_statement.setString(1, request.getParameter("course_id_selected"));
-                    prepare_statement.setString(2, request.getParameter("prof_selected"));
-                    prepare_statement.setString(3, request.getParameter("quarter_selected"));
-                    result_6 = prepare_statement.executeQuery();
-
-
                     connection.commit();
                     connection.setAutoCommit(true);
                 %>
-
-
-                    <h4> Count of grades </h4>
-                    <table border="1">
-                    <tr>
-                    <th>course number </th>
-                    <th># of A </th>
-                    <th># of B</th>
-                    <th># of C</th>
-                    <th># of D</th>
-                    <th># of others</th>
-                    </tr>
-                    <%
-                        while (result_4.next()) {
-                    %>
-                    <tr>
-                        
-                        <td>
-                            <%=result_4.getString("course_number")%>
-                        </td>
-                        <td>
-                            <%=result_4.getString("a")%>
-                        </td>
-                        <td>
-                            <%=result_4.getString("b")%>
-                      </td>
-                      <td>
-                            <%=result_4.getString("c")%>
-                      </td>
-                      <td>
-                            <%=result_4.getString("d")%>
-                      </td>
-                      <td>
-                            <%=result_4.getString("other")%>
-                      </td>
-                   </tr> 
-
-                   <%   
-                    }
-                    %>
-                    </table>
-
-                    <h4> Reference: Students' grades </h4>
-                    <table border="1">
-                    <tr>
-                    <th>course number </th>
-                    <th>teach time </th>
-                    <th>faculty name </th>
-                    <th>grade </th>
-                    <th>student id</th>
-                    </tr>
-                    <%
-                        while (result_5.next()) {
-                    %>
-                    <tr>
-                        
-                        <td>
-                            <%=result_5.getString("course_number")%>
-                        </td>
-                        <td>
-                            <%=result_5.getString("teach_time")%>
-                        </td>
-                        <td>
-                            <%=result_5.getString("fname")%>
-                      </td>
-                      <td>
-                            <%=result_5.getString("grade")%>
-                      </td>
-                      <td>
-                            <%=result_5.getString("student_id")%>
-                      </td>
-                      
-                   </tr> 
-
-                   <%   
-                    }
-                    %>
-                    </table>
-
-
-                    <h4> Reference: count of students' grades </h4>
-                    <table border="1">
-                    <tr>
-                    <th>course number </th>
-                    <th>teach time </th>
-                    <th>faculty name </th>
-                    <th>grade </th>
-                    <th>count</th>
-                    </tr>
-                    <%
-                        while (result_6.next()) {
-                    %>
-                    <tr>
-                        
-                        <td>
-                            <%=result_6.getString("course_number")%>
-                        </td>
-                        <td>
-                            <%=result_6.getString("teach_time")%>
-                        </td>
-                        <td>
-                            <%=result_6.getString("fname")%>
-                      </td>
-                      <td>
-                            <%=result_6.getString("grade")%>
-                      </td>
-                      <td>
-                            <%=result_6.getString("count")%>
-                      </td>
-                      
-                   </tr> 
-
-                   <%   
-                    }
-                    %>
-                    </table>
-
 
             <%
                 }
@@ -245,7 +95,7 @@
                 result_8 = statement2.executeQuery("select * from student order by ssn");
             %>
             
-            <h4> Query </h4>
+            <h4> Insertion </h4>
             <table border="1">
                 <tr>
                     <th>student</th>
@@ -418,64 +268,6 @@
             </table>
 
             <%
-                Statement statement1 = connection.createStatement();
-                
-                result_7 = statement1.executeQuery("select * from view_cpqg order by course_id");
-            %>
-
-                <h4> CPGR </h4>
-                <table border="1">
-                <tr>
-                <th>course number </th>
-                <th>professor </th>
-                <th>quarter</th>
-                <th># of A </th>
-                <th># of B</th>
-                <th># of C</th>
-                <th># of D</th>
-                <th># of others</th>
-                </tr>
-                <%
-                while (result_7.next()) {
-                %>
-                <tr>
-
-                <td>
-                    <%=result_7.getString("course_number")%>
-                </td>
-                <td>
-                    <%=result_7.getString("fname")%>
-                </td>
-                <td>
-                    <%=result_7.getString("teach_time")%>
-                </td>
-                <td>
-                    <%=result_7.getString("a")%>
-                </td>
-                <td>
-                    <%=result_7.getString("b")%>
-                </td>
-                <td>
-                    <%=result_7.getString("c")%>
-                </td>
-                <td>
-                    <%=result_7.getString("d")%>
-                </td>
-                <td>
-                    <%=result_7.getString("other")%>
-                </td>
-
-                </tr> 
-
-                <%   
-                }
-                %>
-                </table>
-
-
-            
-
-            <%
                 result.close();
                 statement.close();
                 connection.close();
@@ -520,10 +312,6 @@
                 }
             }
             %>
-        </td>
         
-    </tr>
-    
-</table>
 </body>
 </html>
